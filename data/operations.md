@@ -150,6 +150,10 @@ Trace `fedcba9876543210` — FLY-1 incident (root span `error`):
 `flyer-flight` `trajectory.smooth` (error, `ticket: FLY-1`, deviation 0.93m) →
 `flight-log-parser` `log.parse_segment` (staging, ok).
 
+Trace `e0f1e0f1e0f1e0f1` — fleet overview path (orbiter-dashboard only, all `ok`):
+`GET /api/flights` (ORB-3) → `GET /api/overview/fleet` (ORB-8) → `chart.store.replay`
+(ORB-7).
+
 Extensible spans (new, all resolve — validated):
 
 | Id | Trace | Service | Resource | Env | ticket |
@@ -159,10 +163,13 @@ Extensible spans (new, all resolve — validated):
 | span_30008 | bb00bb00bb00bb00 | flight-log-parser | replay.parse_segment | staging | ORB-2 |
 | span_30009 | bb00bb00bb00bb00 | flight-log-parser | replay.event_stream | staging | ORB-2 |
 | span_30010 | cc11cc11cc11cc11 | telemetry-ingest | ingest.backfill | production | ORB-1 |
+| span_30011 | e0f1e0f1e0f1e0f1 | orbiter-dashboard | GET /api/flights | production | ORB-3 |
+| span_30012 | e0f1e0f1e0f1e0f1 | orbiter-dashboard | GET /api/overview/fleet | production | ORB-8 |
+| span_30013 | e0f1e0f1e0f1e0f1 | orbiter-dashboard | chart.store.replay | production | ORB-7 |
 
-Anchor note: the aggregate-by-service span count asserts **exactly one `orbiter-dashboard`
-span** (`GET /api/flights/live`) — replay (ORB-2) and preflight (FLY-2) traces are therefore
-spanned on `flight-log-parser` / `flyer-gateway` respectively, not on orbiter-dashboard.
+Anchor note: the aggregate-by-service span count asserts **four `orbiter-dashboard` spans**
+(`GET /api/flights/live` + the fleet trace, seed build-out pass 6). The replay (ORB-2) and
+preflight (FLY-2) traces remain spanned on `flight-log-parser` / `flyer-gateway`.
 
 ### CI events
 

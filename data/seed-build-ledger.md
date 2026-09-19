@@ -106,6 +106,19 @@ Suites must stay green after every pass (`npm test` + `npm run smoke` + coverage
   `data/README.md` §5 caps, `links.md` log id range.
 - **Validator impact:** check count grew 299 → 309.
 
+## Pass 6 — Spans: orbiter-dashboard growth (`datadog/mock/seed/events.jsonl`, `datadog/mock/test/mock.test.js`)
+
+- **Seed change:** added `span_30011` (`GET /api/flights`, ORB-3), `span_30012`
+  (`GET /api/overview/fleet`, ORB-8), `span_30013` (`chart.store.replay`, ORB-7) in a new
+  orbiter-dashboard trace `e0f1e0f1e0f1e0f1` (prod, sha 9f2c8a1). Orbiter-dashboard span
+  count grows 1 → 4. Traces `1234567890abcdef` (3 spans) and `fedcba9876543210` untouched.
+- **Test anchors changed (deliberate, noted):**
+  - `datadog/mock/test/mock.test.js` ~L115 — aggregate-by-service orbiter-dashboard count
+    `=== 1` → `=== 4`.
+- **Docs:** `operations.md` §5 spans (new fleet trace + anchor note), `links.md` spans range
+  (span_30001–span_30013) + ORB-3/ORB-7/ORB-8 span rows.
+- **Validator impact:** live-trace 3-span assertion unchanged; check count grew 309 → 318.
+
 ## Anticipated anchor updates (later passes, not yet applied)
 
 These are the specific test assertions that will change, pass by pass, as capped categories
@@ -113,11 +126,11 @@ get built out. They are listed here first so each edit is deliberate and auditab
 
 | Category (pass) | Seed growth | Test assertion to update |
 |---|---|---|
-| Spans | more orbiter-dashboard spans | `datadog/mock/test/mock.test.js` ~L115 (orbiter-dashboard count `=== 1`) |
 | FLY statuses | a second FLY ticket in `In Progress` | `mockapis/test/mock.test.js` ~L99 (JQL total `1`) |
 
 Applied so far: **pass 2** ORB next-key (`ORB-4` → `ORB-9`, `mock.test.js`); **pass 3**
 Confluence counts (ENG 5 → 11, PD 2 → 4, next content id 98312 → 98316 — `mock.test.js` +
 `scripts/smoke.js` + `validate-links.mjs`); **pass 4** containers per-service-per-env
 (5 → 12 — `datadog/mock/test/mock.test.js` + `validate-links.mjs`); **pass 5** logs
-per-service coverage (6 → 11 — `datadog/mock/test/mock.test.js` + `validate-links.mjs`).
+per-service coverage (6 → 11 — `datadog/mock/test/mock.test.js` + `validate-links.mjs`);
+**pass 6** orbiter-dashboard spans (1 → 4 — `datadog/mock/test/mock.test.js`).

@@ -33,12 +33,12 @@ asserts this and must pass.
 |---|---|---|---|---|
 | ORB-1 | 9f2c8a1 (orbiter-prod) | c-1a2b3c (orb-prod-7) | log_10001, log_10002 | span_30010 `ingest.backfill` |
 | ORB-2 | 2b4c5d6 (parser-staging) | — | — | span_30008, span_30009 |
-| ORB-3 | 9f2c8a1 | c-1a2b3c | — | — |
+| ORB-3 | 9f2c8a1 | c-1a2b3c | — | span_30011 |
 | ORB-4 | (none yet) | — | — | — |
 | ORB-5 | (none yet) | — | — | — |
 | ORB-6 | (none yet) | — | — | — |
-| ORB-7 | (none yet) | — | — | — |
-| ORB-8 | (none yet) | — | — | — |
+| ORB-7 | (none yet) | — | — | span_30013 |
+| ORB-8 | (none yet) | — | — | span_30012 |
 | FLY-1 | 6d0e1f (flyer-flight) | c-j0k1l2 (fly-prod-4) | log_10003, log_10004 | span_30004 (error), span_30005 |
 | FLY-2 | a1b2c3 (flyer-gw) | c-7g8h9i (fly-prod-3) | — | span_30006, span_30007 |
 | FLY-3 | 77aa88b (ingest-prod) | c-m3n4o5 (tel-prod-1) | log_10005 (warn), log_10006 | span_30003 `ingest.frames` |
@@ -71,6 +71,6 @@ asserts this and must pass.
 - Issues: 10001–10016 (ORB-1..8 + FLY-1..8). Next ORB auto-key: **ORB-9**; next FLY: FLY-9.
 - Comments: 10000–10021. Changelog: 1–7.
 - Content ids: 98301–98315 (ENG 11 records: 9 pages + 2 blogposts; PD 4 pages). Next free: **98316**.
-- Spans: span_30001–span_30010. CI: pipe_20001–pipe_20022, job_20002–job_20023.
+- Spans: span_30001–span_30013. CI: pipe_20001–pipe_20022, job_20002–job_20023.
 - Logs: log_10001–log_10011 (capped at 11).
 - Containers: c-1a2b3c … c-f9g0h1 (12, per-service-per-env; capped at 12).
