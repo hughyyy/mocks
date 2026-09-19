@@ -7,6 +7,7 @@ consistent end-to-end: a Jira ticket references a Confluence page which referenc
 log, span, and deploy.
 
 - `organisation.md` — the fake company: business, departments/teams, people, products, repos, environments.
+- `components.md` — **component catalog**: every subcomponent, its owner/SME, dependencies, and the relationships component ↔ service ↔ team ↔ ticket ↔ page ↔ event ↔ deploy.
 - `software-specs.md` — software specs per project: services, key flows, formats, incidents, deployments, observability expectations.
 - `README.md` (this file) — the nature of the data: entity model, conventions, and how it maps to each product's store.
 
@@ -58,6 +59,7 @@ Core entities:
 | Person / User | people | accountId, email, name, displayName, department, team, role, timeZone | `users` (Jira + Confluence) |
 | Product | business | name, category, customers | — |
 | Software project (repo) | code | key prefix, name, language, team, purpose | `projects` (Jira), `services` (Datadog) |
+| Component | code | repo, service, owner (team), SME (person), dependencies, tickets, page | via `components.md` |
 | Service | runtime | name, type, repo, envs | `apm-services`, `catalog-entities` (Datadog) |
 | Issue / Ticket | work | key (`ORB-n`/`FLY-n`), type, status, priority, assignee, reporter, comments | `issues`, `comments`, `changelog` (Jira) |
 | Confluence space | docs | key (`ENG`/`PD`), name | `spaces` (Confluence) |

@@ -32,6 +32,18 @@
 Backlog prefixes by team: `ORB` (Orbiter team), `FLY` (Flyer team), plus platform/ops work
 tracked under `FLY`/`ORB` as relevant (see software specs).
 
+**Team ownership & SMEs** (full org chart, escalation path, and per-component owners are in
+[`components.md`](./components.md)):
+
+| Team | Lead (SME) | Backlog prefix | Primary components |
+|---|---|---|---|
+| Orbiter | Grayson Bell | `ORB-*` | orbiter-dashboard (gateway, chart store, replay player), field-ops-app UI |
+| Flyer | Mira Ito | `FLY-*` | flyer-autopilot (trajectory, waypoint, preflight, heartbeat), flyer-gateway |
+| Platform/data | Ravi Mehta | `FLY-*`/`ORB-*` | telemetry-ingest, flight-log-parser, tagging/SRE |
+| QA | Clara Odum | cross-cutting | release gates, flight-log validation |
+| Product | Jo Kwan | — | feature scoping across all; SME = requirements |
+| Design | Theo Laurent | — | all user-facing components; SME = UX |
+
 ## 3. People (staff) — the canonical user set
 
 | accountId | Name | Email | Department | Team / Role | TimeZone |
