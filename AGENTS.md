@@ -54,6 +54,7 @@ it coherent. Read `README.md` for the system overview.
 | Run mock | — | `npm run mock` (:8080) | `npm run mock` (:8090) |
 | Test | `npm test` | `npm test` | `npm test` |
 | Smoke | — | `npm run smoke` | `npm run smoke` |
+| Harness | — | `npm run harness` | `npm run harness` |
 | Coverage | — | `npm run coverage` | `npm run coverage` |
 | Reset live store | — | `npm run reset` | `npm run reset` |
 

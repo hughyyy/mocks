@@ -54,11 +54,13 @@ cd mockcore && npm test                       # 6/6
 cd mockapis && npm run ingest && npm run mock  # http://127.0.0.1:8080
 npm test  # 36/36 (HTTP + round-trips + wire-fidelity + edges)
 npm run smoke && npm run coverage             # 79/967 official ops (8.2%)
+npm run harness                              # every implemented endpoint, validated (126 routes)
 
 # datadog (research + mock)
 cd datadog/mock && npm i && npm run ingest && npm run mock  # http://127.0.0.1:8090
 npm test  # 16/16
 npm run smoke && npm run coverage             # 16/1585 official ops (1.0%)
+npm run harness                              # every implemented endpoint, validated (16 routes)
 ```
 
 Auth: Atlassian — Basic (email+API token / username+pass), Bearer PAT, OAuth-3LO gateway
