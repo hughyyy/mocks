@@ -10,12 +10,13 @@ asserts this and must pass.
 
 | Ticket | Page(s) | Service | Components |
 |---|---|---|---|
+| CRYPTO-1 | 98316 (stablecoin plan) | — (company-level) | Strategy / executive |
 | ORB-1 | 98302 (architecture), 98304 (demo) | orbiter-dashboard, telemetry-ingest (archive) | Gateway / Chart store / Archive client |
 | ORB-2 | 98302 (replay), 98311 (research) | orbiter-dashboard, flight-log-parser | Mission replay player |
 | ORB-3 | 98302 | orbiter-dashboard | Fleet dashboards / chart rendering |
-| ORB-4 | 98302 (auth) | orbiter-dashboard | Sessions/auth |
-| ORB-5 | 98302 (chart store) | orbiter-dashboard | Chart store |
-| ORB-6 | 98302 (archive) | orbiter-dashboard | Archive client |
+| ORB-4 | 98317 (sessions & auth) | orbiter-dashboard | Sessions/auth |
+| ORB-5 | 98318 (chart store) | orbiter-dashboard | Chart store |
+| ORB-6 | 98319 (archive client) | orbiter-dashboard | Archive client |
 | ORB-7 | 98302 (replay) | orbiter-dashboard | Mission replay player |
 | ORB-8 | 98302 (fleet) | orbiter-dashboard | Fleet dashboards |
 | FLY-1 | 98304 (demo), 98305 (incident), 98308 (arch) | flyer-flight | Trajectory smoother / Waypoint controller |
@@ -25,7 +26,7 @@ asserts this and must pass.
 | FLY-5 | 98307 (parser) | flight-log-parser | v2 decoder/validator `flightlog` |
 | FLY-6 | 98309 (field app) | flyer-gateway, orbiter-dashboard | field-ops-app |
 | FLY-7 | 98313 (postmortem), 98308 (release gate) | flyer-flight | CI/CD + deploys |
-| FLY-8 | 98306 (obs section) | telemetry-ingest (observability) | Observability/tagging |
+| FLY-8 | 98320 (tagging conventions) | telemetry-ingest (observability) | Observability/tagging |
 
 ## Tickets → deploy shas → containers/processes/logs/spans
 
@@ -50,17 +51,19 @@ asserts this and must pass.
 
 ## Pages → tickets (page body references)
 
-- 98302: `ORB-1` · 98303: `FLY-3` · 98304: `FLY-1`, `FLY-3`, `ORB-2` · 98305: `FLY-1` ·
+- 98302: `ORB-1` · 98303: `FLY-3`, `FLY-5` · 98304: `FLY-1`, `FLY-3`, `ORB-2` · 98305: `FLY-1` ·
   98306: `ORB-1`, `FLY-3`, `FLY-4` · 98307: `ORB-2`, `FLY-5` · 98308: `FLY-1`, `FLY-2`,
   `FLY-3`, `FLY-7` · 98309: `FLY-2`, `FLY-6`, `ORB-2` · 98310: `FLY-1`, `ORB-2` ·
-  98311: `FLY-2` · 98312: `ORB-3` · 98313: `FLY-7` · 98314: `ORB-8`, `ORB-7`, `FLY-6` ·
-  98315: `FLY-2`, `ORB-7`. All resolve to seeded issues.
+  98311: `FLY-2` · 98312: `ORB-3` · 98313: `FLY-7` · 98314: `ORB-8`, `ORB-7`, `FLY-6`,
+  `ORB-2`, `CRYPTO-1` · 98315: `FLY-2`, `ORB-7` · 98316: `CRYPTO-1` · 98317: `ORB-4` ·
+  98318: `ORB-1`, `ORB-5`, `FLY-4` · 98319: `ORB-6`, `FLY-4` · 98320: `FLY-8`. All resolve
+  to seeded issues.
 
 ## Services → deploy shas → events
 
 | Service | Deploy shas | CI events |
 |---|---|---|
-| orbiter-dashboard | 9f2c8a1 (prod), 1e3f9b2 (staging), d3e4f5a (dev) | pipe_20001, job_20002, pipe_20006, job_20007, pipe_20012, job_20013 |
+| orbiter-dashboard | 9f2c8a1 (prod), 1e3f9b2 (staging), d3e4f5a (dev) | pipe_20001, job_20002, pipe_20006, job_20007, pipe_20012, job_20013, pipe_20024, job_20025 (deploy-stablecoin-experiment) |
 | flyer-gateway | a1b2c3 (prod), 4b5c6d7 (staging) | pipe_20003, job_20010, pipe_20014, job_20015 |
 | flyer-flight | 6d0e1f (prod), e5f6a7b (staging), c7d8e9f (dev) | pipe_20004, job_20005, pipe_20016, job_20017, pipe_20018, job_20019 |
 | telemetry-ingest | 77aa88b (prod), b2c3d4e (staging) | pipe_20008, job_20009, pipe_20020, job_20021 |
@@ -68,9 +71,10 @@ asserts this and must pass.
 
 ## Id ranges (no collisions)
 
-- Issues: 10001–10016 (ORB-1..8 + FLY-1..8). Next ORB auto-key: **ORB-9**; next FLY: FLY-9.
-- Comments: 10000–10021. Changelog: 1–8.
-- Content ids: 98301–98315 (ENG 11 records: 9 pages + 2 blogposts; PD 4 pages). Next free: **98316**.
-- Spans: span_30001–span_30013. CI: pipe_20001–pipe_20022, job_20002–job_20023.
+- Issues: 10001–10017 (ORB-1..8 + FLY-1..8 + CRYPTO-1). Next ORB auto-key: **ORB-9**; next
+  FLY: FLY-9.
+- Comments: 10000–10025. Changelog: 1–9.
+- Content ids: 98301–98320 (ENG 15 records: 13 pages + 2 blogposts; PD 5 pages). Next free: **98321**.
+- Spans: span_30001–span_30013. CI: pipe_20001–pipe_20024, job_20002–job_20025.
 - Logs: log_10001–log_10011 (capped at 11).
 - Containers: c-1a2b3c … c-f9g0h1 (12, per-service-per-env; capped at 12).

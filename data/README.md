@@ -109,7 +109,7 @@ Future seed generation must:
 4. Preserve the established invariants in `../AGENTS.md` (no legacy shapes; round-trip;
    write API → read API observable).
 5. Keep the asserted seed anchors (`HANDOFF.md` §1) byte-identical — see the caps table in
-   `operations.md` (containers = 12, logs = 11, ENG content = 5, PD content = 2, FLY In
-   Progress = 2, ORB next key = ORB-4).
+   `operations.md` (containers = 12, logs = 11, ENG content = 15, PD content = 5, FLY In
+   Progress = 2, ORB next key = ORB-9).
 6. Run `validate-links.mjs` (this folder) before committing — it asserts the cross-link map
    in `links.md` against the actual seeds.

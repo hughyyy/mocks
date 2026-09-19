@@ -38,8 +38,9 @@ checklist), then `mockapis/DESIGN.md` (store schemas) and `../AGENTS.md` (invari
   "gateway"), `98303` Flight Log Format v2 (body "newline-delimited"), `98304` Q3 demo plan
   (ENG, labels demo, body "figure eight"), `98305` incident, `98306` ingest, `98307`
   parser, `98308` flyer architecture, `98309` field-ops, `98312`/`98313` ENG blogposts,
-  `98310/98311/98314/98315` PD; `PD` has **4** pages; ENG CQL search size **11**
-  (9 pages + 2 blogposts); next content id `98316`.
+  `98310/98311/98314/98315/98316` + orphan-ticket pages `98317..98320` (ENG 98317..98320);
+  `PD` has **5** pages; ENG CQL search size **15**
+  (13 pages + 2 blogposts); next content id `98321`.
 - Datadog — containers: `orb-prod-7`/`orbiter-dashboard`/tag `1.4.2` (list count 12,
   per-service-per-env build-out);
   processes incl `flyer-flight`; services incl `orbiter-dashboard`+`flyer-flight`; catalog

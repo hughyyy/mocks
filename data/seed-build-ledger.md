@@ -136,6 +136,43 @@ Suites must stay green after every pass (`npm test` + `npm run smoke` + coverage
 - **Validator impact:** check count unchanged at 318 (same single FLY check, tightened to
   FLY-1 + FLY-5).
 
+## Pass 8 — Mess build-out: orphan-ticket pages, buried context + pivot storyline (`mockapis/seed/*`, `datadog/mock/seed/events.jsonl`)
+
+Deliberate move towards "a real company, not a clean model": fill the four orphaned
+tickets, enrich the thin spec page, and layer in an intentionally contradictory,
+partially-buried executive storyline (a crypto-pivot) whose truth a digging workflow can
+recover and could "turn around".
+
+- **Seed change (Jira):** new `CRYPTO` project (id 10003) + `CRYPTO-1` (id 10017) "Develop a
+  plan to pivot into crypto" (Epic, Highest, In Progress, assigned Noor, reported by Ada —
+  Ada's comment is the buried reality-check: runway 18+ months, pipeline up, board hasn't
+  approved, no banking partner). Comments 10022–10025: Noor champion view, Ada's flag, plus
+  breadcrumbs on ORB-2 (Lena: customers asking about "the blockchain thing") and FLY-2 (Sam:
+  preflight is the thing customers pay for). Changelog 9 = CRYPTO-1 → In Progress.
+  ORB/FLY anchors untouched (max ORB id still 10016, next ORB key ORB-9, FLY In Progress 2).
+- **Seed change (Confluence):** new pages 98316 (PD stablecoin executive plan — the
+  centrepiece, contradicts its own body's claims vs Ada's comment), 98317 (sessions/auth →
+  ORB-4, with an unresolved July security review), 98318 (chart store → ORB-5), 98319
+  (archive client → ORB-6), 98320 (tagging conventions → FLY-8, self-aware about the legacy
+  `service:` label debt). Enriched 98303 (Format v2 example record + FLY-5), and appended
+  contradictory lines to 98310 ("robotics, not a financial services company") and 98314
+  (roadmap: no new business lines; CRYPTO-1 "not part of this roadmap").
+- **Seed change (Datadog):** CI events pipe_20024 + job_20025 `deploy-stablecoin-experiment`
+  (sha 8a1b2c3, tag stablecoin-demo-0.1.0, service orbiter-dashboard) — a smoke contradiction:
+  something was already "deployed" before the plan was approved.
+- **Test anchors changed (deliberate, noted):**
+  - `mockapis/test/mock.test.js` — ENG CQL `s.size` 11 → 15; PD list/page `4` → `5` (×2:
+    Cloud + DC); ORB-2 comment stateful test made seed-count-agnostic (`.some(...)` instead
+    of exact count / `[0]`), because ORB-2 now carries a seed comment.
+  - `mockapis/scripts/smoke.js` — ENG CQL `11` → `15`.
+  - `mockapis/scripts/harness.js` — ENG CQL expectation `11` → `15`.
+  - `data/validate-links.mjs` — ENG 11 → 15, PD 4 → 5, max content id 98315 → 98320 (next
+    98321); issue→service resolution now skips non-ORB/FLY projects (CRYPTO is company-level).
+- **Docs:** `HANDOFF.md` §1 Confluence line, `data/README.md` §5 caps (also corrected the
+  stale ORB next-key reference), `links.md` ticket→page map + page→ticket refs + id ranges.
+- **Validator impact:** page→ticket refs all resolve (new pages reference ORB/FLY keys +
+  CRYPTO-1); check count grew 318 → 342.
+
 ## Anticipated anchor updates (later passes, not yet applied)
 
 These are the specific test assertions that will change, pass by pass, as capped categories
@@ -152,4 +189,6 @@ Confluence counts (ENG 5 → 11, PD 2 → 4, next content id 98312 → 98316 —
 per-service coverage (6 → 11 — `datadog/mock/test/mock.test.js` + `validate-links.mjs`);
 **pass 6** orbiter-dashboard spans (1 → 4 — `datadog/mock/test/mock.test.js`); **pass 7**
 second FLY ticket `In Progress` (1 → 2 — `mockapis/test/mock.test.js` +
+`validate-links.mjs`); **pass 8** mess build-out (ENG 11 → 15, PD 4 → 5, next content id
+98316 → 98321 — `mockapis/test/mock.test.js` + `scripts/smoke.js` + `scripts/harness.js` +
 `validate-links.mjs`).

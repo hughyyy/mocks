@@ -148,9 +148,9 @@ check(maxOrb === 10016, `max ORB issue id must be 10016 (next key ORB-9); got ${
 check(spaces.find((s) => s.key === 'ENG')?.id === '100' && spaces.find((s) => s.key === 'PD')?.id === '101', 'ENG/PD space ids');
 const engContent = content.filter((c) => c.spaceId === '100');
 const pdContent = content.filter((c) => c.spaceId === '101');
-check(engContent.length === 11, `ENG must have exactly 11 content records (has ${engContent.length})`);
-check(pdContent.length === 4, `PD must have exactly 4 content records (has ${pdContent.length})`);
-check(Math.max(...content.map((c) => Number(c.id))) === 98315, 'next content id must be 98316');
+check(engContent.length === 15, `ENG must have exactly 15 content records (has ${engContent.length})`);
+check(pdContent.length === 5, `PD must have exactly 5 content records (has ${pdContent.length})`);
+check(Math.max(...content.map((c) => Number(c.id))) === 98320, 'next content id must be 98321');
 check(content.find((c) => c.id === '98302').bodyStorage.includes('gateway'), '98302 body must contain "gateway"');
 check(content.find((c) => c.id === '98303').bodyStorage.includes('newline-delimited'), '98303 body must contain "newline-delimited"');
 check(content.find((c) => c.id === '98304').bodyStorage.includes('figure eight'), '98304 body must contain "figure eight"');
@@ -180,6 +180,8 @@ const ISSUE_SERVICE = {
   'FLY-7': 'flyer-flight', 'FLY-8': 'telemetry-ingest',
 };
 for (const i of issues) {
+  // Company-level strategy tickets (e.g. CRYPTO) are not scoped to a service.
+  if (!['ORB', 'FLY'].includes(i.projectKey)) continue;
   const fromLabel = (i.labels || []).find((l) => l.startsWith('service:'));
   const resolved = fromLabel ? fromLabel.slice('service:'.length) : ISSUE_SERVICE[i.key];
   check(Boolean(resolved), `issue ${i.key}: no service resolved`);
