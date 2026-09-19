@@ -1,14 +1,15 @@
-# Mock API suite — Jira · Confluence · Datadog
+# Mock API suite — Jira · Confluence · Datadog · Outlook mail
 
-Grouped home for the three local mock-server projects. Each subfolder is its **own git
+Grouped home for the four local mock-server projects. Each subfolder is its **own git
 repository** (matching the workspace convention); this folder holds only the system-level
 documentation and the agents file (`AGENTS.md`).
 
 | Repo | What it is | Serves | Port |
 |---|---|---|---|
-| [`mockcore/`](./mockcore/) | Shared zero-dependency storage core (used by the other two) | — (library) | — |
+| [`mockcore/`](./mockcore/) | Shared zero-dependency storage core (used by the other three) | — (library) | — |
 | [`mockapis/`](./mockapis/) | Jira (Cloud/DC, REST v2+v3) + Confluence (Cloud v1+v2, DC) mock | Atlassian HTTP APIs | `8080` |
 | [`datadog/`](./datadog/) | Datadog research (`README.md`) + v2 hosted-API mock (`mock/`) | Datadog HTTP APIs | `8090` |
+| [`mailmock/`](./mailmock/) | Microsoft Graph / Outlook **business email** mock (inbox + send) | Graph v1.0 APIs | `8100` |
 
 **`data/`** (committed here, in this repo) is the canonical seed-data source: the fictional
 organisation (`organisation.md`), software specs (`software-specs.md`), and the entity
@@ -61,6 +62,15 @@ cd datadog/mock && npm i && npm run ingest && npm run mock  # http://127.0.0.1:8
 npm test  # 16/16
 npm run smoke && npm run coverage             # 16/1585 official ops (1.0%)
 npm run harness                              # every implemented endpoint, validated (16 routes)
+
+# mailmock (Microsoft Graph / Outlook business email)
+cd mailmock && npm run mock                    # http://127.0.0.1:8100
+npm test  # 13/13
+npm run smoke && npm run harness               # 10 routes, all exercised
+npm run simulate                              # timer-driven incoming mail
+
+# Live-activity feed (optional, during a demo — writes to data/, reset restores):
+#   run each repo's `npm run mock` in one terminal and `npm run simulate` in another.
 ```
 
 Auth: Atlassian — Basic (email+API token / username+pass), Bearer PAT, OAuth-3LO gateway

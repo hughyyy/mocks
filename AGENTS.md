@@ -1,6 +1,6 @@
-# AGENTS.md — mock API suite (Jira · Confluence · Datadog)
+# AGENTS.md — mock API suite (Jira · Confluence · Datadog · Outlook mail)
 
-Guide for agents (and humans) working in this folder. Three **independent git repos** live
+Guide for agents (and humans) working in this folder. Four **independent git repos** live
 under the grouped parent; this file describes the whole suite and the invariants that keep
 it coherent. Read `README.md` for the system overview.
 
@@ -11,6 +11,7 @@ it coherent. Read `README.md` for the system overview.
 | `mockcore/` | Zero-dependency storage core: `Database` (document store, atomic JSON persistence, stable ids) + `EventStore` (append-only `events.jsonl`, query/paginate/aggregate) | yes |
 | `mockapis/` | Jira (Cloud/DC v2+v3) + Confluence (Cloud v1+v2, DC) mock on one shared Database. Docs: `DESIGN.md`, `ENDPOINTS.md`, `STATUS.md`, `ACCESS.md` | yes |
 | `datadog/` | Datadog API research (`README.md`) + hosted v2 mock (`mock/`) | yes |
+| `mailmock/` | Microsoft Graph / Outlook **business email** mock (inbox + send). Docs: `README.md`, `ENDPOINTS.md`, `STATUS.md` | yes |
 | `data/` (this repo) | **Canonical seed model + build-out handoff** — fictional org
   (`organisation.md`), software specs (`software-specs.md`), component catalog with
   owners/SMEs/relationships (`components.md`), entity conventions (`README.md`), and the
@@ -29,34 +30,39 @@ it coherent. Read `README.md` for the system overview.
 3. **Writes must round-trip through reads.** Every write endpoint persists to the store;
    the corresponding read reflects it. The contract suites (`*roundtrip.test.js`) enforce
    this — changes to handlers or the model must keep them green.
-4. **Projections live in `*-wire.js`** (`jira-wire`, `confluence-wire`, `datadog-wire`);
-   HTTP mounts (`jira-http`, `confluence-http`, `datadog-http`) are thin wrappers. Keep it
-   that way; do not reintroduce per-handler shape mapping.
-5. **Sibling layout is load-bearing.** `mockapis/*` and `datadog/mock/*` import
-   `mockcore` by relative path (`../../mockcore`, `../../../mockcore`). All three folders
-   must move together; never move one alone.
-6. **`workflowconcept` must stay at `Source/workflowconcept`.** `mockapis`' HTTP tests and
+4. **Projections live in `*-wire.js`** (`jira-wire`, `confluence-wire`, `datadog-wire`,
+   `mail-wire`); HTTP mounts (`jira-http`, `confluence-http`, `datadog-http`, `mail-http`)
+   are thin wrappers. Keep it that way; do not reintroduce per-handler shape mapping.
+5. **Sibling layout is load-bearing.** `mockapis/*`, `datadog/mock/*` and `mailmock/*`
+   import `mockcore` by relative path (`../../mockcore`, `../../../mockcore`). All four
+   folders must move together; never move one alone.
+6. **Live-activity simulators touch the live store only.** Each product's
+   `npm run simulate` feeds writes through the running server's HTTP API into `data/`
+   (gitignored). They never mutate `seed/`, and test suites boot from seeds into temp dirs,
+   so simulators can never break the asserted anchors. `npm run reset` restores after demoing.
+7. **`workflowconcept` must stay at `Source/workflowconcept`.** `mockapis`' HTTP tests and
    smoke import the real client at `../../../workflowconcept/src/jira.js` (relative to
    `mockapis/test` and `mockapis/scripts`).
-7. **Never commit `data/` or `specs/`** — live stores and regenerable ingested descriptors
+8. **Never commit `data/` or `specs/`** — live stores and regenerable ingested descriptors
    (`npm run ingest`, `npm run reset`). `node_modules/` is dev-only.
-8. **Wire-fidelity vs official specs.** Responses should validate under `MOCK_VALIDATE=1`;
+9. **Wire-fidelity vs official specs.** Responses should validate under `MOCK_VALIDATE=1`;
    the wire-fidelity tests assert this for Jira `IssueBean`, Confluence v2 `PageSingle`,
    and Datadog spans. If a spec contradicts the real API (e.g. Confluence
    `PageSingle.parentId: null`), prefer the real API and update the validator/tests.
 
 ## Commands (run from each repo root)
 
-| Task | mockcore | mockapis | datadog/mock |
-|---|---|---|---|
-| Install | — | — | `npm i` (dev-only js-yaml) |
-| Ingest specs | — | `npm run ingest` | `npm run ingest` |
-| Run mock | — | `npm run mock` (:8080) | `npm run mock` (:8090) |
-| Test | `npm test` | `npm test` | `npm test` |
-| Smoke | — | `npm run smoke` | `npm run smoke` |
-| Harness | — | `npm run harness` | `npm run harness` |
-| Coverage | — | `npm run coverage` | `npm run coverage` |
-| Reset live store | — | `npm run reset` | `npm run reset` |
+| Task | mockcore | mockapis | datadog/mock | mailmock |
+|---|---|---|---|---|
+| Install | — | — | `npm i` (dev-only js-yaml) | — |
+| Ingest specs | — | `npm run ingest` | `npm run ingest` | — |
+| Run mock | — | `npm run mock` (:8080) | `npm run mock` (:8090) | `npm run mock` (:8100) |
+| Test | `npm test` | `npm test` | `npm test` | `npm test` |
+| Smoke | — | `npm run smoke` | `npm run smoke` | `npm run smoke` |
+| Harness | — | `npm run harness` | `npm run harness` | `npm run harness` |
+| Simulate (live feed) | — | `npm run simulate` | `npm run simulate` | `npm run simulate` |
+| Coverage | — | `npm run coverage` | `npm run coverage` | `npm run coverage` |
+| Reset live store | — | `npm run reset` | `npm run reset` | `npm run reset` |
 
 ## Change flow
 
