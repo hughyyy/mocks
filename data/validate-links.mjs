@@ -148,9 +148,9 @@ check(maxOrb === 10016, `max ORB issue id must be 10016 (next key ORB-9); got ${
 check(spaces.find((s) => s.key === 'ENG')?.id === '100' && spaces.find((s) => s.key === 'PD')?.id === '101', 'ENG/PD space ids');
 const engContent = content.filter((c) => c.spaceId === '100');
 const pdContent = content.filter((c) => c.spaceId === '101');
-check(engContent.length === 5, `ENG must have exactly 5 content records (has ${engContent.length})`);
-check(pdContent.length === 2, `PD must have exactly 2 content records (has ${pdContent.length})`);
-check(Math.max(...content.map((c) => Number(c.id))) === 98311, 'next content id must be 98312');
+check(engContent.length === 11, `ENG must have exactly 11 content records (has ${engContent.length})`);
+check(pdContent.length === 4, `PD must have exactly 4 content records (has ${pdContent.length})`);
+check(Math.max(...content.map((c) => Number(c.id))) === 98315, 'next content id must be 98316');
 check(content.find((c) => c.id === '98302').bodyStorage.includes('gateway'), '98302 body must contain "gateway"');
 check(content.find((c) => c.id === '98303').bodyStorage.includes('newline-delimited'), '98303 body must contain "newline-delimited"');
 check(content.find((c) => c.id === '98304').bodyStorage.includes('figure eight'), '98304 body must contain "figure eight"');

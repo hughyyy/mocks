@@ -18,14 +18,14 @@ asserts this and must pass.
 | ORB-6 | 98302 (archive) | orbiter-dashboard | Archive client |
 | ORB-7 | 98302 (replay) | orbiter-dashboard | Mission replay player |
 | ORB-8 | 98302 (fleet) | orbiter-dashboard | Fleet dashboards |
-| FLY-1 | 98304 (demo), 98305 (incident) | flyer-flight | Trajectory smoother / Waypoint controller |
-| FLY-2 | 98311 (research FLY-2), 98303 (preflight-adjacent) | flyer-gateway | Preflight checklist / field-ops-app |
-| FLY-3 | 98303 (heartbeat record) | telemetry-ingest, flyer-flight | Heartbeat producer / v2 parser |
-| FLY-4 | 98303 (ingest) | telemetry-ingest | Archive/backfill API |
-| FLY-5 | 98303 (validation) | flight-log-parser | v2 decoder/validator `flightlog` |
-| FLY-6 | 98302 (replay), 98311 | flyer-gateway, orbiter-dashboard | field-ops-app |
-| FLY-7 | 98305 (postmortem note) | flyer-flight | CI/CD + deploys |
-| FLY-8 | 98302 (obs section) | telemetry-ingest (observability) | Observability/tagging |
+| FLY-1 | 98304 (demo), 98305 (incident), 98308 (arch) | flyer-flight | Trajectory smoother / Waypoint controller |
+| FLY-2 | 98308 (preflight API), 98309 (field app), 98311 (research) | flyer-gateway | Preflight checklist / field-ops-app |
+| FLY-3 | 98303 (heartbeat record), 98306 (ingest), 98308 (arch) | telemetry-ingest, flyer-flight | Heartbeat producer / v2 parser |
+| FLY-4 | 98306 (ingest archive) | telemetry-ingest | Archive/backfill API |
+| FLY-5 | 98307 (parser) | flight-log-parser | v2 decoder/validator `flightlog` |
+| FLY-6 | 98309 (field app) | flyer-gateway, orbiter-dashboard | field-ops-app |
+| FLY-7 | 98313 (postmortem), 98308 (release gate) | flyer-flight | CI/CD + deploys |
+| FLY-8 | 98306 (obs section) | telemetry-ingest (observability) | Observability/tagging |
 
 ## Tickets → deploy shas → containers/processes/logs/spans
 
@@ -50,9 +50,11 @@ asserts this and must pass.
 
 ## Pages → tickets (page body references)
 
-- 98302 body references `ORB-1`. — 98303 body references `FLY-3`. — 98304 body references
-  `FLY-1`, `FLY-3`, `ORB-2`. — 98305 body references `FLY-1`. — 98310 body references
-  `FLY-1`, `ORB-2`. — 98311 body references `FLY-2`. All resolve to seeded issues.
+- 98302: `ORB-1` · 98303: `FLY-3` · 98304: `FLY-1`, `FLY-3`, `ORB-2` · 98305: `FLY-1` ·
+  98306: `ORB-1`, `FLY-3`, `FLY-4` · 98307: `ORB-2`, `FLY-5` · 98308: `FLY-1`, `FLY-2`,
+  `FLY-3`, `FLY-7` · 98309: `FLY-2`, `FLY-6`, `ORB-2` · 98310: `FLY-1`, `ORB-2` ·
+  98311: `FLY-2` · 98312: `ORB-3` · 98313: `FLY-7` · 98314: `ORB-8`, `ORB-7`, `FLY-6` ·
+  98315: `FLY-2`, `ORB-7`. All resolve to seeded issues.
 
 ## Services → deploy shas → events
 
@@ -68,7 +70,7 @@ asserts this and must pass.
 
 - Issues: 10001–10016 (ORB-1..8 + FLY-1..8). Next ORB auto-key: **ORB-9**; next FLY: FLY-9.
 - Comments: 10000–10021. Changelog: 1–7.
-- Content ids: 98301–98311 only (next free 98312).
+- Content ids: 98301–98315 (ENG 11 records: 9 pages + 2 blogposts; PD 4 pages). Next free: **98316**.
 - Spans: span_30001–span_30010. CI: pipe_20001–pipe_20011, job_20002–job_20010.
 - Logs: log_10001–log_10006 (capped at 6).
 - Containers: c-1a2b3c … c-m3n4o5 (5, capped).

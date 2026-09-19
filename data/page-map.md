@@ -1,10 +1,10 @@
 # Confluence page map — the documentation contract
 
-Page records in `mockapis/seed/content.json` are **anchor-capped**: the CQL
-`space = "ENG"` search must return **5** records and `space = "PD"` lists must return **2**
-(`HANDOFF.md` §1, `mock.test.js`). Content ids are numeric strings; the next free id is
-**98312**. Because of the caps, per-component documentation lives in the bodies of the seven
-fixed pages below — no new pages or blogposts are added to ENG/PD.
+Page records in `mockapis/seed/content.json`. Per the **seed build-out pass 3** (ledger), the
+documentation tree was deliberately grown: ENG now has **11** content records (7 pages + 2
+pages + 2 blogposts), PD has **4** pages. The previously-capped CQL counts
+(`space = "ENG"` → 5, `space = "PD"` → 2) were updated in `mock.test.js` / `smoke.js` and
+recorded in `seed-build-ledger.md`. Next free content id: **98316**.
 
 Space inventory (`spaces.json`):
 
@@ -15,39 +15,50 @@ Space inventory (`spaces.json`):
 
 ## Page map (id → title → space → parent → topic)
 
-| Id | Title | Space | Parent | Topic / coverage |
-|---|---|---|---|---|
-| 98301 | Welcome to Brightline Engineering | ENG | — | Onboarding; home of the ENG tree (child of 98301: 98302) |
-| 98302 | Orbiter Architecture Overview | ENG | 98301 | orbiter-dashboard: **Gateway**, **Chart store**, **Flight log player / mission replay**; references ORB-1 (anchor: body contains "gateway" — labels architecture/orbiter) |
-| 98303 | Flight Log Format v2 | ENG | 98301 | telemetry-ingest / flight-log-parser / flyer: v2 record types (imu 100Hz, **heartbeat 1Hz FLY-3**, waypoint); validation via `flightlog` (FLY-5); anchor: body contains "newline-delimited" — labels spec/flyer |
-| 98304 | Q3 demo plan | ENG | — | Go-to-market demo: "figure eight" corridor livestreamed to Orbiter (anchor: body contains "figure eight", labels demo/planning); milestones tie FLY-1, FLY-3, ORB-2 |
-| 98305 | Incident: waypoint overshoot on tight turns | ENG | 98304 | incident page for FLY-1: timeline 09-01 filed → 09-03 root cause → 09-15 sim repro (0.9m); labels incident/flyer |
-| 98310 | Product vision 2026 | PD | — | vision: corridor reliability (FLY-1), self-serve replays (ORB-2); labels vision |
-| 98311 | Customer interviews — July | PD | 98310 | research: preflight checklist (FLY-2), replays for customers, longer autonomy; labels research |
+### ENG — Engineering (11 records: 9 pages + 2 blogposts)
+
+| Id | Title | Parent | Topic / coverage |
+|---|---|---|---|
+| 98301 | Welcome to Brightline Engineering | — | Onboarding; home of the ENG tree |
+| 98302 | Orbiter Architecture Overview | 98301 | orbiter-dashboard: Gateway, Chart store, Archive client, Mission replay player, Fleet dashboards, Sessions/auth (ORB-1..4, ORB-8) |
+| 98303 | Flight Log Format v2 | 98301 | v2 record types (imu/heartbeat/waypoint), validation (FLY-3, FLY-5) |
+| 98304 | Q3 demo plan | — | "figure eight" corridor demo (FLY-1, FLY-3, ORB-2) |
+| 98305 | Incident: waypoint overshoot on tight turns | 98304 | incident page for FLY-1 (timeline) |
+| 98306 | Telemetry Ingest — ingestion, batching, backfill | 98301 | telemetry-ingest: ingest endpoints, frame batching, archive/backfill API (FLY-3, FLY-4, ORB-1) |
+| 98307 | Flight Log Parser — decoder & replay streamer | 98301 | flight-log-parser: `flightlog` validator, replay event streamer (FLY-5, ORB-2) |
+| 98308 | Flyer Autopilot Architecture | 98301 | flyer-gateway + flyer-flight: smoother, waypoint, preflight, heartbeat, release gate (FLY-1/2/3/7) |
+| 98309 | Field Ops App — tablet companion | 98301 | field-ops-app: preflight UI, live mission, replay view (FLY-2/6, ORB-2) |
+| 98312 | Release: Orbiter 1.4.2 + telemetry ingest 3.0.1 | — | **blogpost** — release announcement (ORB-3; shas 9f2c8a1 / 77aa88b) |
+| 98313 | Postmortem: flyer-flight 0.9.0 shipped past a red gate | — | **blogpost** — release/incident note (FLY-7, deploy-flyer-flight-prod 6d0e1f) |
+
+### PD — Product (4 pages)
+
+| Id | Title | Parent | Topic |
+|---|---|---|---|
+| 98310 | Product vision 2026 | — | vision (FLY-1, ORB-2) |
+| 98311 | Customer interviews — July | 98310 | research (FLY-2, replays, autonomy) |
+| 98314 | Product roadmap — Q4 2026 | 98310 | roadmap (ORB-8, ORB-7, FLY-6) |
+| 98315 | Customer interviews — September (Flyer + replays) | 98311 | research (FLY-2, ORB-7) |
 
 ## Component → page coverage (every component has a page)
 
-Each component's documentation anchor:
-
 | Component | Page(s) |
 |---|---|
-| Gateway, Chart store, Archive client, Mission replay player, Fleet dashboards | 98302 |
-| Sessions/auth | 98302 (auth section) + ORB-4 (ticket) |
-| Trajectory smoother, Waypoint controller | 98304 (demo route), 98305 (incident) |
-| Preflight checklist service | 98311 (research ask FLY-2) + 98304 |
-| Heartbeat telemetry producer | 98303 (heartbeat record FLY-3) |
-| Flight Log Format v2 parser, Frame batching pipeline, Archive/backfill API, Ingest endpoints | 98303 (format + ingest sections) |
-| v2 decoder/validator `flightlog`, Replay event streamer | 98303 (validation FLY-5) + 98302 (replay player) |
-| field-ops-app (preflight UI, live mission, replay view) | 98302 (replay) + 98311 (research) |
-| CI/CD + deploys, Observability/tagging, Incident response, Release planning | 98302 (deploy/observability sections), 98305 (incident), 98310/98311 (planning) |
+| Gateway, Chart store, Archive client, Mission replay player, Fleet dashboards, Sessions/auth | 98302 (architecture); chart store 98302+ORB-5, archive client 98302+ORB-6, replay 98302+ORB-7, fleet 98302+ORB-8 |
+| Trajectory smoother, Waypoint controller | 98304 (demo), 98305 (incident), 98308 (architecture) |
+| Preflight checklist service | 98308 (architecture), 98309 (field app), 98311 (research) |
+| Heartbeat telemetry producer | 98303 (heartbeat record), 98308 (architecture) |
+| Flight Log Format v2 parser, Frame batching pipeline, Archive/backfill API, Ingest endpoints | 98303 (format), 98306 (ingest service) |
+| v2 decoder/validator `flightlog`, Replay event streamer | 98303 (validation), 98307 (parser service) |
+| field-ops-app (preflight UI, live mission, replay view) | 98309 (field app) + 98302 (replay) + 98311/98315 (research) |
+| CI/CD + deploys, Observability/tagging, Incident response, Release planning | 98308 (release gate), 98313 (postmortem), 98305 (incident), 98314 (roadmap), 98310/98311 (planning) |
 
-Body content is XHTML storage (`body.storage`): headings, lists and code samples; every
-page that references a ticket (e.g. "See ORB-1") keeps that key resolvable in
-`issues.json` (enforced by `validate-links.mjs`).
+Body content is XHTML storage (`body.storage`): headings, lists and code samples; every page
+that references a ticket (e.g. "See ORB-1") keeps that key resolvable in `issues.json`
+(enforced by `validate-links.mjs`).
 
 ## Blogposts
 
-`content.json` currently ships no blogposts. Release announcements for Orbiter 1.4.2 / Flyer
-gateway 2.1.0 are documented as **planned** under ENG — adding them would raise the seeded
-CQL count above the 5-record anchor, so they stay out of the seed and the body anchors above
-are preserved byte-identical.
+Release announcements and postmortems live in ENG as `type: blogpost`: `98312` (Orbiter
+1.4.2 + ingest 3.0.1 release) and `98313` (flyer-flight 0.9.0 red-gate postmortem). They
+count toward the ENG CQL total (11), so the CQL assertion was updated deliberately in pass 3.

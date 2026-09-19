@@ -36,8 +36,10 @@ checklist), then `mockapis/DESIGN.md` (store schemas) and `../AGENTS.md` (invari
 - Confluence — spaces `ENG`(id 100)/`PD`(101); pages `98301` Welcome, `98302` Orbiter
   Architecture Overview (parent 98301, labels architecture/orbiter, body contains
   "gateway"), `98303` Flight Log Format v2 (body "newline-delimited"), `98304` Q3 demo plan
-  (ENG, labels demo, body "figure eight"), `98305` incident, `98310/98311` PD; `PD` has **2**
-  pages; ENG CQL search size **5**; next content id `98312`.
+  (ENG, labels demo, body "figure eight"), `98305` incident, `98306` ingest, `98307`
+  parser, `98308` flyer architecture, `98309` field-ops, `98312`/`98313` ENG blogposts,
+  `98310/98311/98314/98315` PD; `PD` has **4** pages; ENG CQL search size **11**
+  (9 pages + 2 blogposts); next content id `98316`.
 - Datadog — containers: `orb-prod-7`/`orbiter-dashboard`/tag `1.4.2` (list count 5);
   processes incl `flyer-flight`; services incl `orbiter-dashboard`+`flyer-flight`; catalog
   ≥4 entities; relations expose `orbiter-dashboard → flyer-gateway|telemetry-ingest`; logs:
