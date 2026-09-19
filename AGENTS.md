@@ -11,12 +11,16 @@ it coherent. Read `README.md` for the system overview.
 | `mockcore/` | Zero-dependency storage core: `Database` (document store, atomic JSON persistence, stable ids) + `EventStore` (append-only `events.jsonl`, query/paginate/aggregate) | yes |
 | `mockapis/` | Jira (Cloud/DC v2+v3) + Confluence (Cloud v1+v2, DC) mock on one shared Database. Docs: `DESIGN.md`, `ENDPOINTS.md`, `STATUS.md`, `ACCESS.md` | yes |
 | `datadog/` | Datadog API research (`README.md`) + hosted v2 mock (`mock/`) | yes |
+| `data/` (this repo) | **Canonical seed model** — the fictional organisation, software specs, and entity conventions. Per-product seeds derive from `data/` (`organisation.md`, `software-specs.md`) | with `mocks/` |
 
 ## Hard invariants
 
 1. **`mockcore/` must stay dependency-free.** Do not add runtime npm dependencies to it.
 2. **Seeds are the DB schema.** `seed/*.json` files (and `datadog/mock/seed/events.jsonl`)
    are schema-shaped and load directly — never store a *different* (legacy/catalog) shape.
+   The **canonical model lives in `data/`** (`organisation.md`, `software-specs.md`); when
+   generating/regenerating seeds, derive them from `data/` and keep every cross-link
+   (ticket ↔ page ↔ service ↔ event ↔ deploy) resolvable.
 3. **Writes must round-trip through reads.** Every write endpoint persists to the store;
    the corresponding read reflects it. The contract suites (`*roundtrip.test.js`) enforce
    this — changes to handlers or the model must keep them green.

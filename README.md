@@ -10,6 +10,11 @@ documentation and the agents file (`AGENTS.md`).
 | [`mockapis/`](./mockapis/) | Jira (Cloud/DC, REST v2+v3) + Confluence (Cloud v1+v2, DC) mock | Atlassian HTTP APIs | `8080` |
 | [`datadog/`](./datadog/) | Datadog research (`README.md`) + v2 hosted-API mock (`mock/`) | Datadog HTTP APIs | `8090` |
 
+**`data/`** (committed here, in this repo) is the canonical seed-data source: the fictional
+organisation (`organisation.md`), software specs (`software-specs.md`), and the entity
+model/conventions (`README.md`). Per-product seeds (`mockapis/seed`, `datadog/mock/seed`)
+derive from it.
+
 ## Architecture
 
 All three products return **seeded data with the correct official shapes**, accept writes
@@ -69,6 +74,7 @@ Auth: Atlassian — Basic (email+API token / username+pass), Bearer PAT, OAuth-3
 - `mockapis/ACCESS.md` — official access methods (Cloud + DC, all auth models).
 - `mockapis/examples/refinement-stacks.md` — sample agent call stacks.
 - `datadog/README.md` — official Datadog API research (auth, sites, catalog, OpenAPI spec).
+- `data/` — canonical seed model: organisation + software specs + entity conventions.
 
 ## Intentional non-committed artifacts
 
