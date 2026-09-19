@@ -156,7 +156,7 @@ check(content.find((c) => c.id === '98303').bodyStorage.includes('newline-delimi
 check(content.find((c) => c.id === '98304').bodyStorage.includes('figure eight'), '98304 body must contain "figure eight"');
 
 // Datadog anchors
-check(containers.length === 5, `containers list count must be 5 (has ${containers.length})`);
+check(containers.length === 12, `containers list count must be 12 per-service-per-env (has ${containers.length})`);
 check(containers.some((c) => c.name === 'orbiter-dashboard' && c.host === 'orb-prod-7' && c.imageTags.includes('1.4.2')), 'container orb-prod-7/1.4.2 anchor');
 check(logs.length === 6, `logs count must be 6 before ingest (has ${logs.length})`);
 check(logs.some((l) => l.message.includes('overshoot') && (l.attributes?.ticket ?? tagOf(l.tags, 'ticket')[0]) === 'FLY-1'), 'overshoot log with ticket FLY-1');

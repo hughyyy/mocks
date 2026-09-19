@@ -9,9 +9,10 @@ Conventions (`HANDOFF.md` §3): Datadog tags lowercase `k:v` — `env:`, `servic
 spans add `traceId/spanId/parentId/resourceName/durationNs/env`; CI adds
 `ciLevel/pipeline/gitSha/gitBranch/gitTag/number/url/startedAt`.
 
-**Seed caps (anchors — do not add to these collections):** containers = **5** records;
-logs (`kind:log` events) = **6** records. `HANDOFF.md` §1 asserts these exact counts, so the
-infra/log tables below are a complete snapshot; spans and CI events are extensible.
+**Seed caps (anchors):** containers = **12** records (per-service-per-env, seed build-out
+pass 4); logs (`kind:log` events) = **6** records (anchor — do not add). `HANDOFF.md` §1
+asserts these exact counts, so the infra/log tables below are a complete snapshot; spans and
+CI events are extensible.
 
 ## 1. Services & catalog
 
@@ -47,10 +48,12 @@ telemetry-ingest; `relation_to=flyer-gateway` → source flyer-gateway).
 
 ## 2. Infrastructure — containers
 
-`containers.json` — exactly **5** records (anchor count). One container per prod service
-plus the staging Orbiter. Each container's `git.commit.sha` matches the deploy that shipped
-it (resolved via section 3) and carries a `deployment:<service>-<env>-<date>` tag naming
-that deploy.
+`containers.json` — exactly **12** records (anchor count): one container per declared
+service/environment pair (prod/staging/dev). Each container's `git.commit.sha` matches the
+deploy that shipped it (resolved via section 3) and carries a
+`deployment:<service>-<env>-<date>` tag naming that deploy. Only one production
+`orbiter-dashboard` container exists (`orb-prod-7`) — the prod-orbiter filter assertion
+depends on it.
 
 | Container | Service | Host | Env | Image tag | git sha | Deployment tag |
 |---|---|---|---|---|---|---|
@@ -59,6 +62,13 @@ that deploy.
 | c-7g8h9i | flyer-gateway | fly-prod-3 | production | 2.1.0 | a1b2c3 | deployment:flyer-gateway-prod-2026-09-12 |
 | c-j0k1l2 | flyer-flight | fly-prod-4 | production | 0.9.0 | 6d0e1f | deployment:flyer-flight-prod-2026-09-15 |
 | c-m3n4o5 | telemetry-ingest | tel-prod-1 | production | 3.0.1 | 77aa88b | deployment:telemetry-ingest-prod-2026-09-01 |
+| c-n1o2p3 | orbiter-dashboard | orb-dev-1 | dev | 1.4.0 | d3e4f5a | deployment:orbiter-dev-2026-09-05 |
+| c-q4r5s6 | flyer-gateway | fly-staging-2 | staging | 2.0.9 | 4b5c6d7 | deployment:flyer-gateway-staging-2026-09-11 |
+| c-t7u8v9 | flyer-flight | fly-staging-3 | staging | 0.9.0-rc1 | e5f6a7b | deployment:flyer-flight-staging-2026-09-14 |
+| c-w0x1y2 | flyer-flight | fly-dev-2 | dev | 0.9.0-dev | c7d8e9f | deployment:flyer-flight-dev-2026-09-13 |
+| c-z3a4b5 | telemetry-ingest | tel-staging-1 | staging | 3.0.0 | b2c3d4e | deployment:telemetry-ingest-staging-2026-08-30 |
+| c-c6d7e8 | flight-log-parser | fly-staging-1 | staging | 0.4.0 | 2b4c5d6 | deployment:flight-log-parser-staging-2026-09-16 |
+| c-f9g0h1 | flight-log-parser | fly-dev-3 | dev | 0.4.0-dev | 8e9f0a1 | deployment:flight-log-parser-dev-2026-09-15 |
 
 ## 3. Deployments (per-pipeline history)
 
@@ -73,6 +83,12 @@ that deploy.
 | deploy-flyer-flight-prod | flyer-flight | prod | 6d0e1f | flyer-flight-0.9.0 | **error** | 2026-09-15 |
 | deploy-telemetry-ingest-prod | telemetry-ingest | prod | 77aa88b | telemetry-ingest-3.0.1 | success | 2026-09-01 |
 | deploy-flight-log-parser-staging | flight-log-parser | staging | 2b4c5d6 | flight-log-parser-0.4.0 | success | 2026-09-16 |
+| deploy-orbiter-dev | orbiter-dashboard | dev | d3e4f5a | orbiter-1.4.0 | success | 2026-09-05 |
+| deploy-flyer-gateway-staging | flyer-gateway | staging | 4b5c6d7 | flyer-gw-2.0.9 | success | 2026-09-11 |
+| deploy-flyer-flight-staging | flyer-flight | staging | e5f6a7b | flyer-flight-0.9.0-rc1 | success | 2026-09-14 |
+| deploy-flyer-flight-dev | flyer-flight | dev | c7d8e9f | flyer-flight-0.9.0-dev | success | 2026-09-13 |
+| deploy-telemetry-ingest-staging | telemetry-ingest | staging | b2c3d4e | telemetry-ingest-3.0.0 | success | 2026-08-30 |
+| deploy-flight-log-parser-dev | flight-log-parser | dev | 8e9f0a1 | flight-log-parser-0.4.0-dev | success | 2026-09-15 |
 
 Notable: `deploy-flyer-flight-prod` shipped 0.9.0 past a **red** `smoke-test` job —
 tracked as FLY-7 (see `tickets.md`); the `deploy-flyer-flight-prod` pipeline + smoke-test
@@ -92,6 +108,12 @@ same `deployment:` tag as its container's deploy.
 | fly-prod-4 | flyer-flight | production | flyer-flight --mode operator | 6d0e1f | 0.9.0 | deployment:flyer-flight-prod-2026-09-15 |
 | tel-prod-1 | telemetry-ingest | production | telemetry-ingest run --workers 8 | 77aa88b | 3.0.1 | deployment:telemetry-ingest-prod-2026-09-01 |
 | fly-staging-1 | flight-log-parser | staging | flyer-gw flightlog --parse-log /var/log/flight.v2.jsonl | 2b4c5d6 | 0.4.0 | deployment:flight-log-parser-staging-2026-09-16 |
+| orb-dev-1 | orbiter-dashboard | dev | node … dist/server.js | d3e4f5a | 1.4.0 | deployment:orbiter-dev-2026-09-05 |
+| fly-staging-2 | flyer-gateway | staging | flyer-gateway --config … | 4b5c6d7 | 2.0.9 | deployment:flyer-gateway-staging-2026-09-11 |
+| fly-staging-3 | flyer-flight | staging | flyer-flight --mode operator | e5f6a7b | 0.9.0-rc1 | deployment:flyer-flight-staging-2026-09-14 |
+| fly-dev-2 | flyer-flight | dev | flyer-flight --mode sim | c7d8e9f | 0.9.0-dev | deployment:flyer-flight-dev-2026-09-13 |
+| tel-staging-1 | telemetry-ingest | staging | telemetry-ingest run --workers 4 | b2c3d4e | 3.0.0 | deployment:telemetry-ingest-staging-2026-08-30 |
+| fly-dev-3 | flight-log-parser | dev | flightlog --watch /var/log/flight.v2.jsonl | 8e9f0a1 | 0.4.0-dev | deployment:flight-log-parser-dev-2026-09-15 |
 
 ## 5. Observability — events.jsonl
 
@@ -151,6 +173,12 @@ Added for the deploy history above:
 | pipe_20008 + job_20009 | pipeline + job | deploy-telemetry-ingest-prod | 77aa88b | success |
 | job_20010 | job | deploy-flyer-gateway-prod | a1b2c3 | success (rollout) |
 | pipe_20011 | pipeline | deploy-flight-log-parser-staging | 2b4c5d6 | success |
+| pipe_20012 + job_20013 | pipeline + job | deploy-orbiter-dev | d3e4f5a | success |
+| pipe_20014 + job_20015 | pipeline + job | deploy-flyer-gateway-staging | 4b5c6d7 | success |
+| pipe_20016 + job_20017 | pipeline + job | deploy-flyer-flight-staging | e5f6a7b | success |
+| pipe_20018 + job_20019 | pipeline + job | deploy-flyer-flight-dev | c7d8e9f | success |
+| pipe_20020 + job_20021 | pipeline + job | deploy-telemetry-ingest-staging | b2c3d4e | success |
+| pipe_20022 + job_20023 | pipeline + job | deploy-flight-log-parser-dev | 8e9f0a1 | success |
 
 ## 6. Cross-service coverage
 

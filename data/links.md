@@ -60,17 +60,17 @@ asserts this and must pass.
 
 | Service | Deploy shas | CI events |
 |---|---|---|
-| orbiter-dashboard | 9f2c8a1 (prod), 1e3f9b2 (staging) | pipe_20001, job_20002, pipe_20006, job_20007 |
-| flyer-gateway | a1b2c3 | pipe_20003, job_20010 |
-| flyer-flight | 6d0e1f | pipe_20004, job_20005 |
-| telemetry-ingest | 77aa88b | pipe_20008, job_20009 |
-| flight-log-parser | 2b4c5d6 | pipe_20011 |
+| orbiter-dashboard | 9f2c8a1 (prod), 1e3f9b2 (staging), d3e4f5a (dev) | pipe_20001, job_20002, pipe_20006, job_20007, pipe_20012, job_20013 |
+| flyer-gateway | a1b2c3 (prod), 4b5c6d7 (staging) | pipe_20003, job_20010, pipe_20014, job_20015 |
+| flyer-flight | 6d0e1f (prod), e5f6a7b (staging), c7d8e9f (dev) | pipe_20004, job_20005, pipe_20016, job_20017, pipe_20018, job_20019 |
+| telemetry-ingest | 77aa88b (prod), b2c3d4e (staging) | pipe_20008, job_20009, pipe_20020, job_20021 |
+| flight-log-parser | 2b4c5d6 (staging), 8e9f0a1 (dev) | pipe_20011, pipe_20022, job_20023 |
 
 ## Id ranges (no collisions)
 
 - Issues: 10001–10016 (ORB-1..8 + FLY-1..8). Next ORB auto-key: **ORB-9**; next FLY: FLY-9.
 - Comments: 10000–10021. Changelog: 1–7.
 - Content ids: 98301–98315 (ENG 11 records: 9 pages + 2 blogposts; PD 4 pages). Next free: **98316**.
-- Spans: span_30001–span_30010. CI: pipe_20001–pipe_20011, job_20002–job_20010.
+- Spans: span_30001–span_30010. CI: pipe_20001–pipe_20022, job_20002–job_20023.
 - Logs: log_10001–log_10006 (capped at 6).
-- Containers: c-1a2b3c … c-m3n4o5 (5, capped).
+- Containers: c-1a2b3c … c-f9g0h1 (12, per-service-per-env; capped at 12).

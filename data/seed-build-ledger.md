@@ -43,6 +43,35 @@ Suites must stay green after every pass (`npm test` + `npm run smoke` + coverage
   `service:orbiter-dashboard` labels, so the label branch resolves them. No validator file
   change; check count stays 204 (issues 10001–10016, comments 10000–10021 all resolve).
 
+## Pass 4 — Containers + processes per-service-per-env (`datadog/mock/seed/containers.json`, `+processes.json`, `+events.jsonl`, `datadog/mock/test/mock.test.js`)
+
+- **Seed change:** grew `containers.json` from 5 → 12 records — one container per declared
+  service/environment pair. Added dev/staging containers for every service lacking them:
+  `orb-dev-1` (orbiter-dev, 1.4.0), `fly-staging-2` (flyer-gw-staging, 2.0.9),
+  `fly-staging-3` (flyer-flight-staging, 0.9.0-rc1), `fly-dev-2` (flyer-flight-dev,
+  0.9.0-dev), `tel-staging-1` (tel-ingest-staging, 3.0.0), `fly-staging-1`
+  (parser-staging, 0.4.0 — matches the existing pid-7314 process), `fly-dev-3`
+  (parser-dev, 0.4.0-dev). Added 6 matching processes. Each has a unique 7-hex
+  `git.commit.sha` resolving to a new deploy pipeline (see `events.jsonl` additions below)
+  plus a `deployment:<service>-<env>-<date>` tag. Production `orbiter-dashboard` stays a
+  single container (`orb-prod-7`) so the prod-orbiter host filter keeps asserting exactly
+  `['orb-prod-7']`.
+- **Events added:** `events.jsonl` gained 6 `ci-pipeline` + 6 `ci-job` records
+  (`pipe_20012..20022` / `job_20013..20023`) for `deploy-orbiter-dev` (d3e4f5a,
+  orbiter-1.4.0), `deploy-flyer-gateway-staging` (4b5c6d7, flyer-gw-2.0.9),
+  `deploy-flyer-flight-staging` (e5f6a7b, flyer-flight-0.9.0-rc1),
+  `deploy-flyer-flight-dev` (c7d8e9f, flyer-flight-0.9.0-dev),
+  `deploy-telemetry-ingest-staging` (b2c3d4e, telemetry-ingest-3.0.0),
+  `deploy-flight-log-parser-dev` (8e9f0a1, flight-log-parser-0.4.0-dev).
+- **Test anchors changed (deliberate, noted):**
+  - `datadog/mock/test/mock.test.js` ~L40 — `assert.equal(all.data.length, 5)` → `12`.
+  - `data/validate-links.mjs` — `containers.length === 5` → `12`.
+  - `L45` prod orbiter filter (`['orb-prod-7']`) unchanged — single prod orbiter container.
+- **Docs:** `operations.md` §2/§3/§4/§5 + caps note (containers 12), `HANDOFF.md` §1
+  containers line, `data/README.md` §5 caps, `links.md` service→sha maps + id ranges.
+- **Validator impact:** every new container/process sha resolves to the new deploy events;
+  `validate-links` check count grew 255 → 299.
+
 ## Pass 3 — Confluence pages (`mockapis/seed/content.json`, `mock.test.js`, `scripts/smoke.js`)
 
 - **Seed change:** grew the documentation tree from 7 → 15 records. ENG +6 (pages `98306`
@@ -68,11 +97,11 @@ get built out. They are listed here first so each edit is deliberate and auditab
 
 | Category (pass) | Seed growth | Test assertion to update |
 |---|---|---|
-| Containers | per-service-per-env containers (count grows past 5) | `datadog/mock/test/mock.test.js` ~L40 (`all.data.length === 5`) + L45 prod orbiter filter (`['orb-prod-7']`) |
 | Logs | per-service log coverage (grows past 6) | `datadog/mock/test/mock.test.js` ~L87 (`logs.data.length === 6`) + L100 (`7`) + L91 overshoot single-hit |
 | Spans | more orbiter-dashboard spans | `datadog/mock/test/mock.test.js` ~L115 (orbiter-dashboard count `=== 1`) |
 | FLY statuses | a second FLY ticket in `In Progress` | `mockapis/test/mock.test.js` ~L99 (JQL total `1`) |
 
 Applied so far: **pass 2** ORB next-key (`ORB-4` → `ORB-9`, `mock.test.js`); **pass 3**
 Confluence counts (ENG 5 → 11, PD 2 → 4, next content id 98312 → 98316 — `mock.test.js` +
-`scripts/smoke.js` + `validate-links.mjs`).
+`scripts/smoke.js` + `validate-links.mjs`); **pass 4** containers per-service-per-env
+(5 → 12 — `datadog/mock/test/mock.test.js` + `validate-links.mjs`).

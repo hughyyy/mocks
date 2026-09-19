@@ -40,7 +40,8 @@ checklist), then `mockapis/DESIGN.md` (store schemas) and `../AGENTS.md` (invari
   parser, `98308` flyer architecture, `98309` field-ops, `98312`/`98313` ENG blogposts,
   `98310/98311/98314/98315` PD; `PD` has **4** pages; ENG CQL search size **11**
   (9 pages + 2 blogposts); next content id `98316`.
-- Datadog — containers: `orb-prod-7`/`orbiter-dashboard`/tag `1.4.2` (list count 5);
+- Datadog — containers: `orb-prod-7`/`orbiter-dashboard`/tag `1.4.2` (list count 12,
+  per-service-per-env build-out);
   processes incl `flyer-flight`; services incl `orbiter-dashboard`+`flyer-flight`; catalog
   ≥4 entities; relations expose `orbiter-dashboard → flyer-gateway|telemetry-ingest`; logs:
   `overshoot` (ticket FLY-1), **6 logs before ingest, 7 after**; spans: trace
