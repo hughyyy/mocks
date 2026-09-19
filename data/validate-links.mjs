@@ -158,7 +158,7 @@ check(content.find((c) => c.id === '98304').bodyStorage.includes('figure eight')
 // Datadog anchors
 check(containers.length === 12, `containers list count must be 12 per-service-per-env (has ${containers.length})`);
 check(containers.some((c) => c.name === 'orbiter-dashboard' && c.host === 'orb-prod-7' && c.imageTags.includes('1.4.2')), 'container orb-prod-7/1.4.2 anchor');
-check(logs.length === 6, `logs count must be 6 before ingest (has ${logs.length})`);
+check(logs.length === 11, `logs count must be 11 per-service coverage (has ${logs.length})`);
 check(logs.some((l) => l.message.includes('overshoot') && (l.attributes?.ticket ?? tagOf(l.tags, 'ticket')[0]) === 'FLY-1'), 'overshoot log with ticket FLY-1');
 check(spans.some((s) => s.traceId === 'fedcba9876543210' && s.service === 'flyer-flight' && s.status === 'error'), 'trace fedcba9876543210 flyer-flight error span');
 const liveTrace = spans.filter((s) => s.traceId === '1234567890abcdef');

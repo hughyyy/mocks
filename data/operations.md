@@ -10,9 +10,9 @@ spans add `traceId/spanId/parentId/resourceName/durationNs/env`; CI adds
 `ciLevel/pipeline/gitSha/gitBranch/gitTag/number/url/startedAt`.
 
 **Seed caps (anchors):** containers = **12** records (per-service-per-env, seed build-out
-pass 4); logs (`kind:log` events) = **6** records (anchor — do not add). `HANDOFF.md` §1
-asserts these exact counts, so the infra/log tables below are a complete snapshot; spans and
-CI events are extensible.
+pass 4); logs (`kind:log` events) = **11** records (per-service coverage, seed build-out
+pass 5). `HANDOFF.md` §1 asserts these exact counts, so the infra/log tables below are a
+complete snapshot; spans and CI events are extensible.
 
 ## 1. Services & catalog
 
@@ -117,11 +117,11 @@ same `deployment:` tag as its container's deploy.
 
 ## 5. Observability — events.jsonl
 
-One stream, `kind: log | span | ci-pipeline | ci-job`. **Logs are capped at 6** (anchor)
-and cover the three prod incidents; spans/CI extend to every service, deploy and feature
-ticket.
+One stream, `kind: log | span | ci-pipeline | ci-job`. **Logs are capped at 11** (anchor)
+and cover every service plus the three prod incidents; spans/CI extend to every service,
+deploy and feature ticket.
 
-### Logs (6 — exhaustive)
+### Logs (11 — exhaustive)
 
 | Id | Service | Status | Message | ticket |
 |---|---|---|---|---|
@@ -131,6 +131,11 @@ ticket.
 | log_10004 | flyer-flight | info | spline curvature clamp applied; replanning segment after wp-6 | — (FLY-1 context) |
 | log_10005 | telemetry-ingest | warn | heartbeat telemetry write failed: buffer full | — (FLY-3 context) |
 | log_10006 | telemetry-ingest | info | telemetry frame batch ingested (1024 frames) | — |
+| log_10007 | orbiter-dashboard | info | session resumed; chart-store backfill resynced 4h of live history | ORB-4 |
+| log_10008 | flyer-gateway | info | preflight checklist verified for mission F-0142: battery, gps, firmware, link ok | FLY-2 |
+| log_10009 | flyer-gateway | warn | checklist token near expiry; re-signed before departure | FLY-2 |
+| log_10010 | flight-log-parser | info | flightlog v2 segment parsed (wp-6..wp-7, 2048 records) | FLY-5 |
+| log_10011 | flight-log-parser | warn | malformed v2 frame dropped (bad checksum at offset 0x1F2C4) | FLY-5 |
 
 Search contract: query `overshoot` → exactly 1 hit with `ticket: FLY-1` (so no new log may
 contain "overshoot").

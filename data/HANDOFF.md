@@ -44,7 +44,7 @@ checklist), then `mockapis/DESIGN.md` (store schemas) and `../AGENTS.md` (invari
   per-service-per-env build-out);
   processes incl `flyer-flight`; services incl `orbiter-dashboard`+`flyer-flight`; catalog
   ≥4 entities; relations expose `orbiter-dashboard → flyer-gateway|telemetry-ingest`; logs:
-  `overshoot` (ticket FLY-1), **6 logs before ingest, 7 after**; spans: trace
+  `overshoot` (ticket FLY-1), **11 logs before ingest, 12 after**; spans: trace
   `fedcba9876543210` service `flyer-flight`, `1234567890abcdef` (3 spans); CI
   `deploy-orbiter-prod` sha `9f2c8a1` tag `orbiter-1.4.2`; spans events validate `ok`.
 - JQL totals asserted: `project = FLY AND status = "In Progress"` → **1**; smoke compares

@@ -72,5 +72,5 @@ asserts this and must pass.
 - Comments: 10000–10021. Changelog: 1–7.
 - Content ids: 98301–98315 (ENG 11 records: 9 pages + 2 blogposts; PD 4 pages). Next free: **98316**.
 - Spans: span_30001–span_30010. CI: pipe_20001–pipe_20022, job_20002–job_20023.
-- Logs: log_10001–log_10006 (capped at 6).
+- Logs: log_10001–log_10011 (capped at 11).
 - Containers: c-1a2b3c … c-f9g0h1 (12, per-service-per-env; capped at 12).

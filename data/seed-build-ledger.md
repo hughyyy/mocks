@@ -43,6 +43,24 @@ Suites must stay green after every pass (`npm test` + `npm run smoke` + coverage
   `service:orbiter-dashboard` labels, so the label branch resolves them. No validator file
   change; check count stays 204 (issues 10001–10016, comments 10000–10021 all resolve).
 
+## Pass 3 — Confluence pages (`mockapis/seed/content.json`, `mock.test.js`, `scripts/smoke.js`)
+
+- **Seed change:** grew the documentation tree from 7 → 15 records. ENG +6 (pages `98306`
+  Telemetry Ingest, `98307` Flight Log Parser, `98308` Flyer Autopilot Architecture, `98309`
+  Field Ops App, plus blogposts `98312` release and `98313` flyer-flight postmortem); PD +2
+  (`98314` Q4 roadmap, `98315` September interviews). All carry full body.storage XHTML,
+  labels, parents; every page references only seeded tickets.
+- **Test anchors changed (deliberate, noted):**
+  - `mockapis/test/mock.test.js` CQL `space = "ENG"` — `s.size === 5` → `11`.
+  - `mockapis/test/mock.test.js` `?spaceKey=PD&type=page` — `2` → `4`.
+  - `mockapis/test/mock.test.js` DC `?spaceKey=PD` — `2` → `4`.
+  - `mockapis/scripts/smoke.js` CQL `space = "ENG"` — `s.size !== 5` → `11` (the smoke
+    script separately hardcoded the same anchor; was caught by the pass-3 smoke run).
+  - `data/validate-links.mjs` — ENG 5 → 11, PD 2 → 4, max content id 98311 → 98315.
+- **Docs:** `page-map.md` rewritten for the 15-page tree; `links.md` page map/refs/id ranges;
+  `HANDOFF.md` §1 Confluence line.
+- **Validator impact:** page → ticket refs all resolve; check count grew 236 → 255.
+
 ## Pass 4 — Containers + processes per-service-per-env (`datadog/mock/seed/containers.json`, `+processes.json`, `+events.jsonl`, `datadog/mock/test/mock.test.js`)
 
 - **Seed change:** grew `containers.json` from 5 → 12 records — one container per declared
@@ -72,23 +90,21 @@ Suites must stay green after every pass (`npm test` + `npm run smoke` + coverage
 - **Validator impact:** every new container/process sha resolves to the new deploy events;
   `validate-links` check count grew 255 → 299.
 
-## Pass 3 — Confluence pages (`mockapis/seed/content.json`, `mock.test.js`, `scripts/smoke.js`)
+## Pass 5 — Logs per-service coverage (`datadog/mock/seed/events.jsonl`, `datadog/mock/test/mock.test.js`)
 
-- **Seed change:** grew the documentation tree from 7 → 15 records. ENG +6 (pages `98306`
-  Telemetry Ingest, `98307` Flight Log Parser, `98308` Flyer Autopilot Architecture, `98309`
-  Field Ops App, plus blogposts `98312` release and `98313` flyer-flight postmortem); PD +2
-  (`98314` Q4 roadmap, `98315` September interviews). All carry full body.storage XHTML,
-  labels, parents; every page references only seeded tickets.
+- **Seed change:** grew `kind:log` events from 6 → 11 records, closing per-service coverage
+  gaps. Added `log_10007` (orbiter-dashboard, session resume, ticket ORB-4), `log_10008`
+  + `log_10009` (flyer-gateway preflight check + token warn, ticket FLY-2), `log_10010`
+  + `log_10011` (flight-log-parser v2 segment parse + malformed-frame warn, ticket FLY-5).
+  No new log contains "overshoot", preserving that single-hit search contract.
 - **Test anchors changed (deliberate, noted):**
-  - `mockapis/test/mock.test.js` CQL `space = "ENG"` — `s.size === 5` → `11`.
-  - `mockapis/test/mock.test.js` `?spaceKey=PD&type=page` — `2` → `4`.
-  - `mockapis/test/mock.test.js` DC `?spaceKey=PD` — `2` → `4`.
-  - `mockapis/scripts/smoke.js` CQL `space = "ENG"` — `s.size !== 5` → `11` (the smoke
-    script separately hardcoded the same anchor; was caught by the pass-3 smoke run).
-  - `data/validate-links.mjs` — ENG 5 → 11, PD 2 → 4, max content id 98311 → 98315.
-- **Docs:** `page-map.md` rewritten for the 15-page tree; `links.md` page map/refs/id ranges;
-  `HANDOFF.md` §1 Confluence line.
-- **Validator impact:** page → ticket refs all resolve; check count grew 236 → 255.
+  - `datadog/mock/test/mock.test.js` ~L87 — `logs.data.length === 6` → `11`.
+  - `datadog/mock/test/mock.test.js` ~L100 — `after.data.length === 7` → `12`.
+  - `L91` `overshoot` search (`1`, `ticket: FLY-1`) unchanged.
+  - `data/validate-links.mjs` — `logs.length === 6` → `11`.
+- **Docs:** `operations.md` §5 cap note + logs table (6 → 11), `HANDOFF.md` §1 logs line,
+  `data/README.md` §5 caps, `links.md` log id range.
+- **Validator impact:** check count grew 299 → 309.
 
 ## Anticipated anchor updates (later passes, not yet applied)
 
@@ -97,11 +113,11 @@ get built out. They are listed here first so each edit is deliberate and auditab
 
 | Category (pass) | Seed growth | Test assertion to update |
 |---|---|---|
-| Logs | per-service log coverage (grows past 6) | `datadog/mock/test/mock.test.js` ~L87 (`logs.data.length === 6`) + L100 (`7`) + L91 overshoot single-hit |
 | Spans | more orbiter-dashboard spans | `datadog/mock/test/mock.test.js` ~L115 (orbiter-dashboard count `=== 1`) |
 | FLY statuses | a second FLY ticket in `In Progress` | `mockapis/test/mock.test.js` ~L99 (JQL total `1`) |
 
 Applied so far: **pass 2** ORB next-key (`ORB-4` → `ORB-9`, `mock.test.js`); **pass 3**
 Confluence counts (ENG 5 → 11, PD 2 → 4, next content id 98312 → 98316 — `mock.test.js` +
 `scripts/smoke.js` + `validate-links.mjs`); **pass 4** containers per-service-per-env
-(5 → 12 — `datadog/mock/test/mock.test.js` + `validate-links.mjs`).
+(5 → 12 — `datadog/mock/test/mock.test.js` + `validate-links.mjs`); **pass 5** logs
+per-service coverage (6 → 11 — `datadog/mock/test/mock.test.js` + `validate-links.mjs`).
