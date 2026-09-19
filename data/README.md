@@ -13,6 +13,7 @@ log, span, and deploy.
 - `page-map.md` — **Confluence page map**: id → title → space → parent → topic, and how the anchor-capped ENG(5)/PD(2) pages cover every component (feeds `mockapis/seed/spaces|content.json`).
 - `operations.md` — **runtime contract**: services/catalog/relations, containers, deploy history, processes, and observability (feeds `datadog/mock/seed/*` + `events.jsonl`).
 - `links.md` — **cross-link map**: every resolvable key (ticket → page → service → deploy sha → containers/logs/spans), asserted by `validate-links.mjs`.
+- `seed-build-ledger.md` — **anchor-change ledger**: every deliberate update to a hard-asserted count/key/status during the category-by-category seed build-out (required by HANDOFF §1).
 - `README.md` (this file) — the nature of the data: entity model, conventions, and how it maps to each product's store.
 
 Actual seed artifacts (schema-shaped JSON that each product's store loads) will be generated

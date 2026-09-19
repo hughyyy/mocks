@@ -60,6 +60,40 @@ tracked under `FLY`/`ORB` as relevant (see software specs).
 | `5d8a01bce4b0a0d01a6f100a` | Lena Fischer | lena@brightline.dev | Field Operations | Support lead | Europe/Berlin |
 | `5d8a01bce4b0a0d01a6f100b` | Paolo Ricci | paolo@brightline.dev | People & Finance | Finance lead | Europe/Rome |
 | `5d8a01bce4b0a0d01a6f100c` | Yuki Tanaka | yuki@brightline.dev | Go-To-Market | Sales | Asia/Tokyo |
+| `5d8a01bce4b0a0d01a6f100d` | Nina Petrov | nina@brightline.dev | Engineering | Orbiter frontend engineer | America/New_York |
+| `5d8a01bce4b0a0d01a6f100e` | Hiroshi Nakata | hiroshi@brightline.dev | Engineering | Flyer control systems engineer | Asia/Tokyo |
+| `5d8a01bce4b0a0d01a6f100f` | Priya Nair | priya@brightline.dev | Engineering | Platform/SRE engineer | Asia/Kolkata |
+| `5d8a01bce4b0a0d01a6f1010` | Dani Osei | dani@brightline.dev | Engineering | QA test automation engineer | Africa/Lagos |
+| `5d8a01bce4b0a0d01a6f1011` | Marta Kowalski | marta@brightline.dev | Product | Associate product manager | Europe/Warsaw |
+| `5d8a01bce4b0a0d01a6f1012` | Luca Moretti | luca@brightline.dev | Design | UX researcher | Europe/Rome |
+| `5d8a01bce4b0a0d01a6f1013` | Aisha Rahman | aisha@brightline.dev | Field Operations | Pilot | Asia/Dubai |
+| `5d8a01bce4b0a0d01a6f1014` | Tom Becker | tom@brightline.dev | Field Operations | Pilot | Europe/Berlin |
+| `5d8a01bce4b0a0d01a6f1015` | Elena Rossi | elena@brightline.dev | Field Operations | Support agent | Europe/Rome |
+| `5d8a01bce4b0a0d01a6f1016` | Zoe Chen | zoe@brightline.dev | Go-To-Market | Marketing lead | America/Los_Angeles |
+| `5d8a01bce4b0a0d01a6f1017` | Omar Idris | omar@brightline.dev | Go-To-Market | Sales engineer | Asia/Dubai |
+| `5d8a01bce4b0a0d01a6f1018` | Grace Adeyemi | grace@brightline.dev | People & Finance | People partner | Africa/Lagos |
+
+**Backfills:** every team has a named backfill/second for its SME — Nina Petrov (Orbiter →
+Grayson), Hiroshi Nakata (Flyer → Mira), Priya Nair (Platform/SRE → Ravi), Dani Osei (QA →
+Clara), Marta Kowalski (Product → Jo), Luca Moretti (Design → Theo), Aisha Rahman + Tom
+Becker (field → Sam), Elena Rossi (support → Lena), Zoe Chen + Omar Idris (GTM → Yuki),
+Grace Adeyemi (People → Paolo). These doubles appear as seconds in the SME directory
+(`components.md` §3).
+
+### Customer contacts
+
+Three named contacts, one per customer account — `accountType: customer` in the Jira/DC
+user set so support tickets can reference the real requester (accountIds under the
+`02b4f1` space, distinct from staff).
+
+| accountId | Name | Customer | Role | TimeZone |
+|---|---|---|---|---|
+| `5d8a01bce4b0a0d02b4f1101` | Margaret Hale | Westwind Utilities (telecom) | Field ops manager | America/Chicago |
+| `5d8a01bce4b0a0d02b4f1102` | Diego Fuentes | Solaris Grid Services (solar) | Operations engineer | America/Denver |
+| `5d8a01bce4b0a0d02b4f1103` | Ethan Cole | Northspan Pipelines (oil & gas) | Integrity engineer | America/Edmonton |
+
+Support flow: Lena/Sam triage on behalf of these contacts; incident page 98305 and replay
+links (`ORB-2`) are how answers get delivered back.
 
 ## 4. Software projects (repos)
 

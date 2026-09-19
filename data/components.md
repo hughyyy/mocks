@@ -98,15 +98,26 @@ tooling) live under Ada/Ravi with `FLY-*`/`ORB-*` tickets as relevant.
 | Domain | SME | Second | Backs up |
 |---|---|---|---|
 | Orbiter / live telemetry / replays | Grayson Bell | Ravi Mehta, Theo Laurent | all `orbiter-dashboard` + `field-ops-app` UI |
+| Orbiter frontend / bundle perf | Nina Petrov | Theo Laurent | Orbiter charts + replay UI (backfill to Grayson) |
 | Flyer / autonomy / trajectory | Mira Ito | Ada Turing, Sam Okafor | `flyer-autopilot` components |
+| Flyer control systems / trajectory | Hiroshi Nakata | Ada Turing | smoother + waypoint controller (backfill to Mira) |
 | Data / log format / ingest / observability | Ravi Mehta | Ada Turing | `telemetry-ingest`, `flight-log-parser`, tagging |
+| SRE / deploys / observability | Priya Nair | Ravi Mehta | CI/CD + tagging conventions (backfill to Ravi) |
 | Quality / release gates / log validation | Clara Odum | Ravi Mehta | QA across repos |
+| Test automation / regression | Dani Osei | Clara Odum | flight-log validation suites (backfill to Clara) |
 | UX / interaction | Theo Laurent | Grayson Bell | all user-facing components |
+| UX research / field interviews | Luca Moretti | Theo Laurent | customer + pilot research (backfill to Theo) |
 | Field operations / flying / preflight | Sam Okafor | Lena Fischer | preflight + field-ops-app |
+| Demo routes / corridor flights | Aisha Rahman, Tom Becker | Sam Okafor | figure-eight demo runs (backfill to Sam) |
 | Support / incidents | Lena Fischer | Sam Okafor | incident pages, replays-as-answers |
+| Support triage | Elena Rossi | Lena Fischer | replays-as-answers intake (backfill to Lena) |
 | Product / requirements | Jo Kwan | Ada Turing | feature scoping, roadmap |
+| Associate PM / roadmap ops | Marta Kowalski | Jo Kwan | Q3 demo plan + backlog grooming (backfill to Jo) |
 | Business / exec | Noor Al-Farsi | Yuki Tanaka | strategy |
 | Sales / customer feedback | Yuki Tanaka | Jo Kwan | requirements intake |
+| Sales engineering / renewals | Omar Idris | Yuki Tanaka | customer renewals + tech demos (backfill to Yuki) |
+| Marketing / launches | Zoe Chen | Yuki Tanaka | release announcements (backfill to Yuki) |
+| People / finance ops | Paolo Ricci | Grace Adeyemi | payroll, hiring, budgets |
 
 ## 4. Relationship wiring (how entities connect)
 
