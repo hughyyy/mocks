@@ -173,6 +173,16 @@ recover and could "turn around".
 - **Validator impact:** page→ticket refs all resolve (new pages reference ORB/FLY keys +
   CRYPTO-1); check count grew 318 → 342.
 
+**Pass 8 addendum — runway contradiction (the "three numbers" breadcrumb).** To force a
+workflow to triangulate, the runway figures disagree across the newest artifacts on *unit*,
+not just magnitude: the stablecoin doc (98316) says **18 months** ("growth bet, not a
+rescue"); the ticket (CRYPTO-1 description) says **18 days** ("urgent, not next-quarter");
+and a CEO correction comment (10026) says he meant **18 HOURS**, asking the doc be
+reconciled before the board call and the 18-day figure not be circulated. Ada's earlier
+comment (10023, "runway 18+ months, pipeline up, numbers don't support it") is the grounded
+truth a workflow can land on. No count/status anchors change; comment range 10000–10026; validator count
+342 → 344 (comment 10026 resolves its owner + author).
+
 ## Anticipated anchor updates (later passes, not yet applied)
 
 These are the specific test assertions that will change, pass by pass, as capped categories

@@ -73,7 +73,7 @@ asserts this and must pass.
 
 - Issues: 10001–10017 (ORB-1..8 + FLY-1..8 + CRYPTO-1). Next ORB auto-key: **ORB-9**; next
   FLY: FLY-9.
-- Comments: 10000–10025. Changelog: 1–9.
+- Comments: 10000–10026. Changelog: 1–9.
 - Content ids: 98301–98320 (ENG 15 records: 13 pages + 2 blogposts; PD 5 pages). Next free: **98321**.
 - Spans: span_30001–span_30013. CI: pipe_20001–pipe_20024, job_20002–job_20025.
 - Logs: log_10001–log_10011 (capped at 11).
