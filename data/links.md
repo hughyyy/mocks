@@ -1,0 +1,65 @@
+# Cross-link map — every resolvable key
+
+One section listing every resolvable key across the two products' stores, chaining
+**ticket → page → service → deploy sha → (containers | logs | spans)**. The `KEY-n` ticket
+keys, Confluence page ids, Datadog services, git shas and event ids below all resolve to
+records shipped in `mockapis/seed/*` and `datadog/mock/seed/*` — `validate-links.mjs`
+asserts this and must pass.
+
+## Tickets → pages → services
+
+| Ticket | Page(s) | Service | Components |
+|---|---|---|---|
+| ORB-1 | 98302 (architecture), 98304 (demo) | orbiter-dashboard, telemetry-ingest (archive) | Gateway / Chart store / Archive client |
+| ORB-2 | 98302 (replay), 98311 (research) | orbiter-dashboard, flight-log-parser | Mission replay player |
+| ORB-3 | 98302 | orbiter-dashboard | Fleet dashboards / chart rendering |
+| ORB-4 | 98302 (auth) | orbiter-dashboard | Sessions/auth (doc-only ticket) |
+| FLY-1 | 98304 (demo), 98305 (incident) | flyer-flight | Trajectory smoother / Waypoint controller |
+| FLY-2 | 98311 (research FLY-2), 98303 (preflight-adjacent) | flyer-gateway | Preflight checklist / field-ops-app |
+| FLY-3 | 98303 (heartbeat record) | telemetry-ingest, flyer-flight | Heartbeat producer / v2 parser |
+| FLY-4 | 98303 (ingest) | telemetry-ingest | Archive/backfill API |
+| FLY-5 | 98303 (validation) | flight-log-parser | v2 decoder/validator `flightlog` |
+| FLY-6 | 98302 (replay), 98311 | flyer-gateway, orbiter-dashboard | field-ops-app |
+| FLY-7 | 98305 (postmortem note) | flyer-flight | CI/CD + deploys |
+| FLY-8 | 98302 (obs section) | telemetry-ingest (observability) | Observability/tagging |
+
+## Tickets → deploy shas → containers/processes/logs/spans
+
+| Ticket | Deploy sha | Containers | Logs | Spans |
+|---|---|---|---|---|
+| ORB-1 | 9f2c8a1 (orbiter-prod) | c-1a2b3c (orb-prod-7) | log_10001, log_10002 | span_30010 `ingest.backfill` |
+| ORB-2 | 2b4c5d6 (parser-staging) | — | — | span_30008, span_30009 |
+| ORB-3 | 9f2c8a1 | c-1a2b3c | — | — |
+| FLY-1 | 6d0e1f (flyer-flight) | c-j0k1l2 (fly-prod-4) | log_10003, log_10004 | span_30004 (error), span_30005 |
+| FLY-2 | a1b2c3 (flyer-gw) | c-7g8h9i (fly-prod-3) | — | span_30006, span_30007 |
+| FLY-3 | 77aa88b (ingest-prod) | c-m3n4o5 (tel-prod-1) | log_10005 (warn), log_10006 | span_30003 `ingest.frames` |
+| FLY-4 | 77aa88b | c-m3n4o5 | log_10002 (backfill) | span_30010 |
+| FLY-5 | 2b4c5d6 (parser-staging) | — | — | span_30005 `log.parse_segment` |
+| FLY-6 | a1b2c3 | c-7g8h9i | — | span_30006, span_30007 |
+| FLY-7 | 6d0e1f (error pipeline) | c-j0k1l2 | — | — (pipe_20004 error smoke) |
+| FLY-8 | all deploy shas | all | — | — |
+
+## Pages → tickets (page body references)
+
+- 98302 body references `ORB-1`. — 98303 body references `FLY-3`. — 98304 body references
+  `FLY-1`, `FLY-3`, `ORB-2`. — 98305 body references `FLY-1`. — 98310 body references
+  `FLY-1`, `ORB-2`. — 98311 body references `FLY-2`. All resolve to seeded issues.
+
+## Services → deploy shas → events
+
+| Service | Deploy shas | CI events |
+|---|---|---|
+| orbiter-dashboard | 9f2c8a1 (prod), 1e3f9b2 (staging) | pipe_20001, job_20002, pipe_20006, job_20007 |
+| flyer-gateway | a1b2c3 | pipe_20003, job_20010 |
+| flyer-flight | 6d0e1f | pipe_20004, job_20005 |
+| telemetry-ingest | 77aa88b | pipe_20008, job_20009 |
+| flight-log-parser | 2b4c5d6 | pipe_20011 |
+
+## Id ranges (no collisions)
+
+- Issues: 10001–10011 (ORB-1..3 + FLY-1..8); **ORB-4 is the reserved next key**.
+- Comments: 10000–10015. Changelog: 1–6.
+- Content ids: 98301–98311 only (next free 98312).
+- Spans: span_30001–span_30010. CI: pipe_20001–pipe_20011, job_20002–job_20010.
+- Logs: log_10001–log_10006 (capped at 6).
+- Containers: c-1a2b3c … c-m3n4o5 (5, capped).

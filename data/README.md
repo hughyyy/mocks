@@ -9,6 +9,10 @@ log, span, and deploy.
 - `organisation.md` — the fake company: business, departments/teams, people, products, repos, environments.
 - `components.md` — **component catalog**: every subcomponent, its owner/SME, dependencies, and the relationships component ↔ service ↔ team ↔ ticket ↔ page ↔ event ↔ deploy.
 - `software-specs.md` — software specs per project: services, key flows, formats, incidents, deployments, observability expectations.
+- `tickets.md` — **ticket backlog**: every component's seed + documented tickets, acceptance criteria, comments, and changelog (feeds `mockapis/seed/issues|comments|changelog.json`).
+- `page-map.md` — **Confluence page map**: id → title → space → parent → topic, and how the anchor-capped ENG(5)/PD(2) pages cover every component (feeds `mockapis/seed/spaces|content.json`).
+- `operations.md` — **runtime contract**: services/catalog/relations, containers, deploy history, processes, and observability (feeds `datadog/mock/seed/*` + `events.jsonl`).
+- `links.md` — **cross-link map**: every resolvable key (ticket → page → service → deploy sha → containers/logs/spans), asserted by `validate-links.mjs`.
 - `README.md` (this file) — the nature of the data: entity model, conventions, and how it maps to each product's store.
 
 Actual seed artifacts (schema-shaped JSON that each product's store loads) will be generated
@@ -103,3 +107,8 @@ Future seed generation must:
 3. Keep every cross-link resolvable (ticket ↔ page ↔ service ↔ event ↔ deploy).
 4. Preserve the established invariants in `../AGENTS.md` (no legacy shapes; round-trip;
    write API → read API observable).
+5. Keep the asserted seed anchors (`HANDOFF.md` §1) byte-identical — see the caps table in
+   `operations.md` (containers = 5, logs = 6, ENG content = 5, PD content = 2, FLY In
+   Progress = 1, ORB next key = ORB-4).
+6. Run `validate-links.mjs` (this folder) before committing — it asserts the cross-link map
+   in `links.md` against the actual seeds.
