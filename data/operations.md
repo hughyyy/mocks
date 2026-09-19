@@ -49,15 +49,16 @@ telemetry-ingest; `relation_to=flyer-gateway` → source flyer-gateway).
 
 `containers.json` — exactly **5** records (anchor count). One container per prod service
 plus the staging Orbiter. Each container's `git.commit.sha` matches the deploy that shipped
-it (resolved via section 3).
+it (resolved via section 3) and carries a `deployment:<service>-<env>-<date>` tag naming
+that deploy.
 
-| Container | Service | Host | Env | Image tag | git sha |
-|---|---|---|---|---|---|
-| c-1a2b3c | orbiter-dashboard | orb-prod-7 | production | 1.4.2 | 9f2c8a1 |
-| c-4d5e6f | orbiter-dashboard | orb-staging-2 | staging | 1.4.1 | 1e3f9b2 |
-| c-7g8h9i | flyer-gateway | fly-prod-3 | production | 2.1.0 | a1b2c3 |
-| c-j0k1l2 | flyer-flight | fly-prod-4 | production | 0.9.0 | 6d0e1f |
-| c-m3n4o5 | telemetry-ingest | tel-prod-1 | production | 3.0.1 | 77aa88b |
+| Container | Service | Host | Env | Image tag | git sha | Deployment tag |
+|---|---|---|---|---|---|---|
+| c-1a2b3c | orbiter-dashboard | orb-prod-7 | production | 1.4.2 | 9f2c8a1 | deployment:orbiter-prod-2026-09-10 |
+| c-4d5e6f | orbiter-dashboard | orb-staging-2 | staging | 1.4.1 | 1e3f9b2 | deployment:orbiter-staging-2026-09-08 |
+| c-7g8h9i | flyer-gateway | fly-prod-3 | production | 2.1.0 | a1b2c3 | deployment:flyer-gateway-prod-2026-09-12 |
+| c-j0k1l2 | flyer-flight | fly-prod-4 | production | 0.9.0 | 6d0e1f | deployment:flyer-flight-prod-2026-09-15 |
+| c-m3n4o5 | telemetry-ingest | tel-prod-1 | production | 3.0.1 | 77aa88b | deployment:telemetry-ingest-prod-2026-09-01 |
 
 ## 3. Deployments (per-pipeline history)
 
@@ -80,16 +81,17 @@ job keep `status: error` in the seed.
 ## 4. Infrastructure — processes
 
 `processes.json` — one long-running process per running container plus staging/dev
-workers (count `>= 4` is the only assertion, so processes are extensible).
+workers (count `>= 4` is the only assertion, so processes are extensible). Each carries the
+same `deployment:` tag as its container's deploy.
 
-| Host | Service | Env | cmdline | git sha | version |
-|---|---|---|---|---|---|
-| orb-prod-7 | orbiter-dashboard | production | node … dist/server.js | 9f2c8a1 | 1.4.2 |
-| orb-staging-2 | orbiter-dashboard | staging | node … dist/server.js | 1e3f9b2 | 1.4.1 |
-| fly-prod-3 | flyer-gateway | production | flyer-gateway --config … | a1b2c3 | 2.1.0 |
-| fly-prod-4 | flyer-flight | production | flyer-flight --mode operator | 6d0e1f | 0.9.0 |
-| tel-prod-1 | telemetry-ingest | production | telemetry-ingest run --workers 8 | 77aa88b | 3.0.1 |
-| fly-staging-1 | flight-log-parser | staging | flyer-gw flightlog --parse-log /var/log/flight.v2.jsonl | 2b4c5d6 | 0.4.0 |
+| Host | Service | Env | cmdline | git sha | version | Deployment tag |
+|---|---|---|---|---|---|---|
+| orb-prod-7 | orbiter-dashboard | production | node … dist/server.js | 9f2c8a1 | 1.4.2 | deployment:orbiter-prod-2026-09-10 |
+| orb-staging-2 | orbiter-dashboard | staging | node … dist/server.js | 1e3f9b2 | 1.4.1 | deployment:orbiter-staging-2026-09-08 |
+| fly-prod-3 | flyer-gateway | production | flyer-gateway --config … | a1b2c3 | 2.1.0 | deployment:flyer-gateway-prod-2026-09-12 |
+| fly-prod-4 | flyer-flight | production | flyer-flight --mode operator | 6d0e1f | 0.9.0 | deployment:flyer-flight-prod-2026-09-15 |
+| tel-prod-1 | telemetry-ingest | production | telemetry-ingest run --workers 8 | 77aa88b | 3.0.1 | deployment:telemetry-ingest-prod-2026-09-01 |
+| fly-staging-1 | flight-log-parser | staging | flyer-gw flightlog --parse-log /var/log/flight.v2.jsonl | 2b4c5d6 | 0.4.0 | deployment:flight-log-parser-staging-2026-09-16 |
 
 ## 5. Observability — events.jsonl
 
