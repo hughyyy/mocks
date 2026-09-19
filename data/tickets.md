@@ -30,7 +30,11 @@ hard anchor; the SME directory in `components.md` is unchanged.
 | `ORB-1` | Live telemetry chart loses history after reconnect | Bug | High | In Progress | ada | grayson | seed (anchor) |
 | `ORB-2` | Self-serve mission replays for support | Story | Medium | To Do | mira | jo | seed (anchor) |
 | `ORB-3` | Upgrade charting library to reduce bundle size | Task | Low | Done | grayson | ada | seed (anchor) |
-| `ORB-4` | Session tokens must survive redeploys | Bug | High | In Progress | ada | grayson | **doc only** |
+| `ORB-4` | Session tokens must survive redeploys | Bug | High | In Progress | ada | grayson | seed |
+| `ORB-5` | Chart store backfill progress indicator | Story | Medium | To Do | nina | grayson | seed |
+| `ORB-6` | Archive client retry with backoff on failed backfill | Bug | Medium | To Do | grayson | ravi | seed |
+| `ORB-7` | Replay player: seek and scrubbing controls | Story | Medium | To Do | nina | theo | seed |
+| `ORB-8` | Fleet overview: live mission status aggregation | Story | Medium | To Do | grayson | jo | seed |
 
 ### ORB-1 — Live telemetry chart loses history after reconnect (anchor)
 
@@ -68,16 +72,56 @@ hard anchor; the SME directory in `components.md` is unchanged.
 - Comment 10002 (grayson, 2026-07-28): "Merged. Bundle is now 312kB gzipped; the telemetry
   chart renders 30% faster in the profiler."
 
-### ORB-4 — Session tokens must survive redeploys (documented only, **not seeded**)
+### ORB-4 — Session tokens must survive redeploys
 
 - Component: Sessions/auth (Ada, cross-cutting).
-- Description: "Users are logged out every time staging is redeployed." Acceptance: a session
-  token issued before a deploy is still accepted after the deploy; only explicitly revoked
-  tokens are rejected.
-- Labels: `[auth, prod-readiness]`. Service: orbiter-dashboard.
-- **Deliberately unseeded** so that creating the next ORB issue in the mock yields `ORB-4`
-  (the asserted next-key anchor in `HANDOFF.md` §1 and `mock.test.js`). It is documented here
-  as the standing next backlog item.
+- Description: "Users are logged out every time staging is redeployed. Session tokens issued
+  before a deploy are rejected by the session store afterwards.\n\nAcceptance: a token issued
+  before a deploy is still accepted after it; only explicitly revoked tokens are rejected."
+- Labels: `[auth, prod-readiness, orbiter, service:orbiter-dashboard]`. Service: orbiter-dashboard.
+- Comments 10016 (grayson, 08-14: reproduced on staging) + 10017 (ada, 08-15: root cause —
+  session store flushes on deploy). Changelog 7 (To Do → In Progress, ada, 08-15).
+- **Seed build-out pass 2** (ledger): previously documented-only so the create contract
+  yielded `ORB-4`; now seeded. Next ORB auto-key is **ORB-9**.
+
+### ORB-5 — Chart store backfill progress indicator
+
+- Component: Chart store (Nina, backfill to Grayson).
+- Description: "During the reconnect backfill (ORB-1) the live chart shows a silent gap for
+  up to two minutes. Surface a progress indicator so operators know history is still
+  loading.\n\nAcceptance: the chart shows a backfill progress ring and a 'live' state once
+  the missed interval is contiguous."
+- Labels: `[telemetry, orbiter, chart-store, service:orbiter-dashboard]`. Comment 10018
+  (nina, 09-20: progress ring ties to the ORB-1 fix).
+
+### ORB-6 — Archive client retry with backoff on failed backfill
+
+- Component: Archive client (Grayson; server counterpart is FLY-4).
+- Description: "When the archive API returns a stale or empty window (see FLY-4) the Orbiter
+  archive client treats it as final and shows truncated history. Retry with exponential
+  backoff until the archive returns data current to the request time.\n\nAcceptance: a failed
+  backfill retries up to 3 times with backoff; the chart renders the contiguous window."
+- Labels: `[telemetry, orbiter, archive, service:orbiter-dashboard]`. Comment 10019 (ravi,
+  09-21: pairs with FLY-4 stale-window root cause).
+
+### ORB-7 — Replay player: seek and scrubbing controls
+
+- Component: Mission replay player (Nina; UX Theo).
+- Description: "Support replays (ORB-2) can only play start-to-finish. Add seek and scrub to
+  the replay player so support can jump straight to the problem window in a mission
+  recording.\n\nAcceptance: seeking to any offset renders the chart state for that timestamp
+  within 1s."
+- Labels: `[replay, orbiter, service:orbiter-dashboard]`. Comment 10020 (theo, 09-20: mocked
+  seek + scrub against a support replay).
+
+### ORB-8 — Fleet overview: live mission status aggregation
+
+- Component: Fleet dashboards (Grayson).
+- Description: "The Q3 demo follow-up: a fleet overview card that aggregates live mission
+  status (flying, preflight, grounded) from the gateway's active sessions.\n\nAcceptance:
+  fleet cards reflect gateway state within 5s; demo route flights surface as 'flying'."
+- Labels: `[fleet, orbiter, dashboard, service:orbiter-dashboard]`. Comment 10021 (jo, 09-19:
+  Q3 demo follow-up, wires mission status from the live trace).
 
 ## FLY (Flyer team → services `flyer-flight`, `flyer-gateway`; platform/ops as relevant)
 

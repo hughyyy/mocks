@@ -138,11 +138,11 @@ check(issues.some((i) => i.key === 'FLY-1' && i.status === 'In Progress'), 'FLY-
 check(issues.some((i) => i.key === 'FLY-2'), 'FLY-2 missing');
 check(issues.some((i) => i.key === 'FLY-3'), 'FLY-3 missing');
 
-// FLY In Progress == 1 ; ORB next key stays ORB-4 (max ORB key is ORB-3)
+// FLY In Progress == 1 ; ORB next key is ORB-9 (max ORB key is ORB-8, seed build-out pass 2)
 const flyInProgress = issues.filter((i) => i.projectKey === 'FLY' && i.status === 'In Progress');
 check(flyInProgress.length === 1 && flyInProgress[0].key === 'FLY-1', `exactly one FLY In Progress expected (got ${flyInProgress.map((i) => i.key).join(',') || 'none'})`);
 const maxOrb = Math.max(...issues.filter((i) => i.projectKey === 'ORB').map((i) => Number(i.id)));
-check(maxOrb === 10003, `max ORB issue id must be 10003 (next key ORB-4); got ${maxOrb}`);
+check(maxOrb === 10016, `max ORB issue id must be 10016 (next key ORB-9); got ${maxOrb}`);
 
 // Confluence anchors
 check(spaces.find((s) => s.key === 'ENG')?.id === '100' && spaces.find((s) => s.key === 'PD')?.id === '101', 'ENG/PD space ids');

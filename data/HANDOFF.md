@@ -28,9 +28,11 @@ checklist), then `mockapis/DESIGN.md` (store schemas) and `../AGENTS.md` (invari
 - Jira — `ORB-1` (summary "Live telemetry chart loses history after reconnect", status
   In Progress, type Bug, priority High, labels `[telemetry,orbiter,reconnect]`, assignee
   ada, reporter grayson, **2 comments**, description contains "backfill"), `ORB-2`
-  "Self-serve mission replays for support", `ORB-3`, `FLY-1` (In Progress), `FLY-2`,
-  `FLY-3`; projects `ORB`/`FLY`; comment id **10001 = ORB-1's second comment**; next key
-  `ORB-4`.
+  "Self-serve mission replays for support", `ORB-3`, `ORB-4..8` (seed build-out pass 2),
+  `FLY-1` (In Progress), `FLY-2`, `FLY-3`; projects `ORB`/`FLY`;
+  comment id **10001 = ORB-1's second comment**; next key `ORB-9`.
+  (Deliberate anchor edits made during the seed build-out — including this one — are
+  recorded in [`seed-build-ledger.md`](./seed-build-ledger.md).)
 - Confluence — spaces `ENG`(id 100)/`PD`(101); pages `98301` Welcome, `98302` Orbiter
   Architecture Overview (parent 98301, labels architecture/orbiter, body contains
   "gateway"), `98303` Flight Log Format v2 (body "newline-delimited"), `98304` Q3 demo plan

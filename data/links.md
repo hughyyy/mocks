@@ -13,7 +13,11 @@ asserts this and must pass.
 | ORB-1 | 98302 (architecture), 98304 (demo) | orbiter-dashboard, telemetry-ingest (archive) | Gateway / Chart store / Archive client |
 | ORB-2 | 98302 (replay), 98311 (research) | orbiter-dashboard, flight-log-parser | Mission replay player |
 | ORB-3 | 98302 | orbiter-dashboard | Fleet dashboards / chart rendering |
-| ORB-4 | 98302 (auth) | orbiter-dashboard | Sessions/auth (doc-only ticket) |
+| ORB-4 | 98302 (auth) | orbiter-dashboard | Sessions/auth |
+| ORB-5 | 98302 (chart store) | orbiter-dashboard | Chart store |
+| ORB-6 | 98302 (archive) | orbiter-dashboard | Archive client |
+| ORB-7 | 98302 (replay) | orbiter-dashboard | Mission replay player |
+| ORB-8 | 98302 (fleet) | orbiter-dashboard | Fleet dashboards |
 | FLY-1 | 98304 (demo), 98305 (incident) | flyer-flight | Trajectory smoother / Waypoint controller |
 | FLY-2 | 98311 (research FLY-2), 98303 (preflight-adjacent) | flyer-gateway | Preflight checklist / field-ops-app |
 | FLY-3 | 98303 (heartbeat record) | telemetry-ingest, flyer-flight | Heartbeat producer / v2 parser |
@@ -30,6 +34,11 @@ asserts this and must pass.
 | ORB-1 | 9f2c8a1 (orbiter-prod) | c-1a2b3c (orb-prod-7) | log_10001, log_10002 | span_30010 `ingest.backfill` |
 | ORB-2 | 2b4c5d6 (parser-staging) | — | — | span_30008, span_30009 |
 | ORB-3 | 9f2c8a1 | c-1a2b3c | — | — |
+| ORB-4 | (none yet) | — | — | — |
+| ORB-5 | (none yet) | — | — | — |
+| ORB-6 | (none yet) | — | — | — |
+| ORB-7 | (none yet) | — | — | — |
+| ORB-8 | (none yet) | — | — | — |
 | FLY-1 | 6d0e1f (flyer-flight) | c-j0k1l2 (fly-prod-4) | log_10003, log_10004 | span_30004 (error), span_30005 |
 | FLY-2 | a1b2c3 (flyer-gw) | c-7g8h9i (fly-prod-3) | — | span_30006, span_30007 |
 | FLY-3 | 77aa88b (ingest-prod) | c-m3n4o5 (tel-prod-1) | log_10005 (warn), log_10006 | span_30003 `ingest.frames` |
@@ -57,8 +66,8 @@ asserts this and must pass.
 
 ## Id ranges (no collisions)
 
-- Issues: 10001–10011 (ORB-1..3 + FLY-1..8); **ORB-4 is the reserved next key**.
-- Comments: 10000–10015. Changelog: 1–6.
+- Issues: 10001–10016 (ORB-1..8 + FLY-1..8). Next ORB auto-key: **ORB-9**; next FLY: FLY-9.
+- Comments: 10000–10021. Changelog: 1–7.
 - Content ids: 98301–98311 only (next free 98312).
 - Spans: span_30001–span_30010. CI: pipe_20001–pipe_20011, job_20002–job_20010.
 - Logs: log_10001–log_10006 (capped at 6).
