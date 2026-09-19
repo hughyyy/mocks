@@ -2,7 +2,8 @@
 
 Grouped home for the four local mock-server projects. Each subfolder is its **own git
 repository** (matching the workspace convention); this folder holds only the system-level
-documentation and the agents file (`AGENTS.md`).
+documentation and the agents file (`AGENTS.md`). Agents and humans connecting to the suite:
+start at [`AGENT-GUIDE.md`](./AGENT-GUIDE.md) (stand up → connect → verify).
 
 | Repo | What it is | Serves | Port |
 |---|---|---|---|

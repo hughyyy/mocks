@@ -17,6 +17,14 @@ it coherent. Read `README.md` for the system overview.
   owners/SMEs/relationships (`components.md`), entity conventions (`README.md`), and the
   agent brief to complete + seed (`HANDOFF.md`). | with `mocks/` |
 
+## Using the suite (stand up + connect)
+
+Before you stand up any of the four servers — and whenever a port, auth shape, base URL, or
+the live-activity feed is unclear — read [`AGENT-GUIDE.md`](./AGENT-GUIDE.md). It walks the
+setup (install → boot → readiness probes), per-product authentication and first calls, the
+`seed/` vs `data/` model and anchor rules, the change-verification battery, and the index of
+this suite's reference docs.
+
 ## Hard invariants
 
 1. **`mockcore/` must stay dependency-free.** Do not add runtime npm dependencies to it.
@@ -82,6 +90,7 @@ verification (tests + smoke + coverage + a link validator).
 
 ## Where things live
 
+- User guide (stand up + connect): `AGENT-GUIDE.md`
 - Canonical model + handoff: `data/` (`HANDOFF.md` first for agents continuing the fiction)
 - Design + deviations: `mockapis/DESIGN.md`
 - Endpoint inventory + data-backed flag: `mockapis/ENDPOINTS.md`
