@@ -2,26 +2,42 @@
 
 **Mission:** (1) flesh out the remaining detail in the canonical model under `data/`
 (organisation, components, software specs, relationships, owners/SMEs) until the "whole
-picture" is coherent; then (2) generate the **actual schema-shaped seed artifacts** for both
-mock repos, derived from `data/`, keeping every suite green.
+picture" is coherent; then (2) generate the **actual schema-shaped seed artifacts** for each
+mock repo, derived from `data/`, keeping every suite green.
+
+**Status (2026-09-20): Phase A and Phase B are complete and verified.** The canonical docs,
+all seed passes (1–8, including the deliberate "mess" layer), the endpoint harness, the
+live-activity simulators, and the mail mock are in place; see `seed-build-ledger.md` for the
+anchor-change record. This file remains the standing rulebook — extend the universe, don't
+regress the anchors, keep the suites green.
 
 Read first: `data/README.md` (entity model + conventions), `organisation.md`, `components.md`
 (component catalog + owners/SMEs), `software-specs.md` (per-project specs + consistency
-checklist), then `mockapis/DESIGN.md` (store schemas) and `../AGENTS.md` (invariants).
+checklist), `emails.md` (the mail universe), then `mockapis/DESIGN.md` (store schemas) and
+`../AGENTS.md` (invariants). Agents standing up / connecting to the suite: `../AGENT-GUIDE.md`.
 
 ---
 
 ## 1. What already exists (do not regress)
 
-- **Brightline Robotics**: business, 6 departments/teams, 12 staff, 5 repos, environments,
-  products — `organisation.md`.
-- **Component catalog**: ~24 components with owner/SME/second + relationship wiring —
+- **Brightline Robotics**: business, 6 departments/teams, 24 staff + 3 customer contacts,
+  5 repos, environments, products — `organisation.md`.
+- **Component catalog**: ~26 components with owner/SME/second + relationship wiring —
   `components.md`.
 - **Software specs**: services, flows, Flight Log Format v2, incidents, deploy tags —
   `software-specs.md`.
-- **Working seeds** (already schema-shaped and **tested**): `mockapis/seed/*` and
-  `datadog/mock/seed/*`. Tests: mockapis 36/36 + smoke, datadog 16/16 + smoke, coverage
-  Jira 52 + Conf 27 + Datadog 16.
+- **Working seeds** (already schema-shaped and **tested**): `mockapis/seed/*`,
+  `datadog/mock/seed/*`, and `mailmock/seed/*`. Verified: mockapis 36/36 + smoke + harness
+  (126 routes) + coverage 8.2%; datadog 16/16 + smoke + harness (16 routes) + coverage 1.0%;
+  mailmock 13/13 + smoke + harness (10 routes); `data/validate-links.mjs` 344 checks.
+- **Live-activity feeds**: `npm run simulate` per mock keeps a demo moving (comments/
+  transitions/pages, log/entity ingest, storyline mail delivery) — live `data/` only,
+  `npm run reset` restores.
+- **The deliberate mess**: the freshest layer (CRYPTO-1 "pivot into crypto" + Confluence
+  98316 stablecoin plan + the 18-months/18-days/18-hours runway contradiction across
+  ticket/doc/comment/email) is *intentional* — a real company is inaccurate and
+  self-contradictory, and a workflow should have to dig to find the ground truth. Do not
+  "clean up" these contradictions; the ledger pass 8 addendum records them.
 
 **Critical: the tests assert specific seed values.** These anchors must stay byte-identical:
 
@@ -29,8 +45,11 @@ checklist), then `mockapis/DESIGN.md` (store schemas) and `../AGENTS.md` (invari
   In Progress, type Bug, priority High, labels `[telemetry,orbiter,reconnect]`, assignee
   ada, reporter grayson, **2 comments**, description contains "backfill"), `ORB-2`
   "Self-serve mission replays for support", `ORB-3`, `ORB-4..8` (seed build-out pass 2),
-  `FLY-1` (In Progress), `FLY-2`, `FLY-3`; projects `ORB`/`FLY`;
-  comment id **10001 = ORB-1's second comment**; next key `ORB-9`.
+  `FLY-1` (In Progress), `FLY-2`, `FLY-3`; projects `ORB`/`FLY` plus `CRYPTO` (pass 8,
+  `CRYPTO-1` id 10017 — the pivot ticket, with the buried runway contradiction in its
+  comments);
+  comment id **10001 = ORB-1's second comment**; comment range 10000–10026; changelog 1–9;
+  next key `ORB-9`.
   (Deliberate anchor edits made during the seed build-out — including this one — are
   recorded in [`seed-build-ledger.md`](./seed-build-ledger.md).)
 - Confluence — spaces `ENG`(id 100)/`PD`(101); pages `98301` Welcome, `98302` Orbiter
@@ -57,6 +76,10 @@ either choose data that keeps the assertion true, or update the specific test as
 deliberately and note it. Run the affected suites before finishing.
 
 ## 2. Phase A — flesh out the canonical model (`data/*.md`)
+
+**Status: complete.** All eight areas below are done and cross-linked; the doc set now also
+includes `emails.md` (the mail universe) and `../AGENT-GUIDE.md` (how to stand up + connect).
+The checklist remains the standard for any future extension.
 
 Verify and complete each area in the docs (in this order), keeping ids/keys/tags/timestamps
 consistent with §3:
@@ -107,39 +130,54 @@ Store schemas (exact field lists — see `mockapis/DESIGN.md` for behaviour):
 - `datadog/mock/seed/containers.json` — `{id, name, host, image, imageTags[], imageDigest?, state, startedAt?, createdAt?, tags[]}`
 - `datadog/mock/seed/processes.json` — `{pid, ppid?, user, host, cmdline, start?, timestamp?, tags[]}`
 - `datadog/mock/seed/events.jsonl` — one JSON object per line: `{kind: log|span|ci-pipeline|ci-job, id?, timestamp, message?, service, host?, status, tags[], attributes{}, …}`; spans add `traceId/spanId/parentId/resourceName/durationNs/env`; CI adds `ciLevel/pipeline/gitSha/gitBranch/gitTag/number/url/startedAt`
+- `mailmock/seed/contacts.json` — `{id, email, displayName, role?}` (org directory: staff + customers)
+- `mailmock/seed/messages.json` — `{id, ownerEmail, folder: inbox|sent|drafts|archive, subject, body, bodyContentType, fromName?, fromEmail?, toRecipients[], ccRecipients[], bccRecipients[], isRead, importance, hasAttachments, conversationId?, internetMessageId?, sentAt?, createdAt, updatedAt}`
 
 Globals/conventions:
 
 - Timestamps 2026, ISO-8601 UTC. Issue ids numeric global-unique; keys `KEY-n` monotonic;
-  content ids numeric strings (next after existing max, i.e. > 98311); event ids unique;
+  content ids numeric strings (next after existing max, i.e. > 98320); event ids unique;
   deploy shas 7-hex unique.
 - Datadog tags lowercase `k:v`: `env:`, `service:`, `version:`, `git.commit.sha:`,
   `deployment:<service>-<env>-<date>`, `team:`, `ticket:`.
-- Every issue about a service carries `service:<name>`; every related event carries
+- Every issue about a service carries `service:<name>` — with two deliberate exceptions:
+  the legacy anchors `ORB-1..3`/`FLY-1..3` predate the convention (the validator falls back
+  to a hardcoded map; see `links.md` and page 98320), and the `CRYPTO` project is
+  company-level, not service-scoped (validator skips it). Every related event carries
   `ticket: <KEY-n>`; every container/process git sha matches its deploy; every page that a
   ticket references exists.
 
 ## 4. Phase B — generate the seed artifacts
 
+**Status: complete** (passes 1–8, ledger-recorded). The checklist remains the standard.
+
 1. From the completed `data/` docs, produce/update:
    - `mockapis/seed/{users,projects,issues,comments,changelog,spaces,content}.json`
    - `datadog/mock/seed/{api-keys,services,catalog-entities,catalog-relations,containers,processes}.json` + `events.jsonl`
+   - `mailmock/seed/{contacts,messages}.json`
    Keep all §1 anchors; schema shapes exactly as §3.
 2. **Verification (required):**
    - `cd mockcore && npm test`
-   - `cd mockapis && npm test && npm run smoke && npm run coverage` (coverage must stay
-     ~79/967; route surface unchanged)
-   - `cd datadog/mock && npm test && npm run smoke && npm run coverage`
-   - Cross-link check: every `ticket:`/`service:`/`git sha` tag in events resolves to an
-     issue/page/deploy; log or add a small `mocks/data/validate-links.mjs` that asserts
-     this and passes.
-3. Commit per repo (`mockapis`, `datadog/mock`, and the `mocks/` repo for `data/` docs),
-   keeping `data/` (live stores) and `specs/` out of the index.
+   - `cd mockapis && npm test && npm run smoke && npm run harness && npm run coverage`
+     (coverage must stay ~8.2%; route surface unchanged unless a route is added)
+   - `cd datadog/mock && npm test && npm run smoke && npm run harness && npm run coverage`
+     (coverage ~1.0%)
+   - `cd mailmock && npm test && npm run smoke && npm run harness` (+ `npm run coverage`)
+   - Cross-link check: `node mocks/data/validate-links.mjs` — every `ticket:`/`service:`/
+     `git sha` tag in events resolves to an issue/page/deploy; the validator asserts this
+     and must pass.
+3. Commit per repo (`mockapis`, `datadog/mock`, `mailmock`, and the `mocks/` repo for
+   `data/` docs), keeping `data/` (live stores) and `specs/` out of the index.
+
+Run the live-activity feeds (`npm run simulate`) against a booted mock only for demos; they
+write to the gitignored live store and never to `seed/`.
 
 ## 5. Definition of done
 
 - `data/*.md` tell one coherent story: every component has a ticket, a page, a service,
-  an owner/SME, and observable events; every cross-link resolves.
+  an owner/SME, and observable events; every cross-link (ticket ↔ page ↔ service ↔ event ↔
+  deploy ↔ email) resolves — accepting the *deliberate* contradictions of the mess layer.
 - Seeds are schema-shaped, load directly, and all of §1 anchors are intact.
-- All three repos' `npm test` + `npm run smoke` green; coverage unchanged; `npm run reset`
-  restores a working demo; the link validator passes.
+- All four repos' `npm test` + `npm run smoke` green; the harness covers every implemented
+  endpoint (mockapis 126, datadog 16, mailmock 10); coverage unchanged unless a route
+  changed; `npm run reset` restores a working demo; the link validator passes.
