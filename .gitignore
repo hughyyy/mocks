@@ -1,0 +1,4 @@
+# Nested project repos — each is its own git repository
+/mockapis/
+/mockcore/
+/datadog/
