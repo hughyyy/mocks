@@ -140,7 +140,7 @@ check(issues.some((i) => i.key === 'FLY-3'), 'FLY-3 missing');
 
 // FLY In Progress == 1 ; ORB next key is ORB-9 (max ORB key is ORB-8, seed build-out pass 2)
 const flyInProgress = issues.filter((i) => i.projectKey === 'FLY' && i.status === 'In Progress');
-check(flyInProgress.length === 1 && flyInProgress[0].key === 'FLY-1', `exactly one FLY In Progress expected (got ${flyInProgress.map((i) => i.key).join(',') || 'none'})`);
+check(flyInProgress.length === 2 && flyInProgress[0].key === 'FLY-1' && flyInProgress.some((i) => i.key === 'FLY-5'), `FLY In Progress must be FLY-1 + FLY-5 (got ${flyInProgress.map((i) => i.key).join(',') || 'none'})`);
 const maxOrb = Math.max(...issues.filter((i) => i.projectKey === 'ORB').map((i) => Number(i.id)));
 check(maxOrb === 10016, `max ORB issue id must be 10016 (next key ORB-9); got ${maxOrb}`);
 

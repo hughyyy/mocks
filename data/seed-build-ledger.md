@@ -119,6 +119,23 @@ Suites must stay green after every pass (`npm test` + `npm run smoke` + coverage
   (span_30001–span_30013) + ORB-3/ORB-7/ORB-8 span rows.
 - **Validator impact:** live-trace 3-span assertion unchanged; check count grew 309 → 318.
 
+## Pass 7 — FLY statuses: second In Progress ticket (`mockapis/seed/issues.json`, `+changelog.json`, `mockapis/test/mock.test.js`)
+
+- **Seed change:** moved `FLY-5` (flightlog validator, id 10008) from `To Do` →
+  `In Progress` — it is actively underway: parser comments 10007/10008 and the FLY-5 logs
+  (`log_10010`/`log_10011`) date 2026-09-18. Added changelog 8 (To Do → In Progress, clara,
+  2026-09-18). `FLY-1` stays the primary anchor; `updatedAt` 2026-09-18 already reflects
+  the activity. JQL `project = FLY AND status = "In Progress"` now returns 2.
+- **Test anchors changed (deliberate, noted):**
+  - `mockapis/test/mock.test.js` ~L101 — `body.total === 1` → `2`; `issues[0].key ===
+    'FLY-1'` unchanged (FLY-1 id 10004 < FLY-5 id 10008).
+  - `data/validate-links.mjs` — FLY In Progress: `length === 1 && [0].key === 'FLY-1'` →
+    `length === 2`, first FLY-1, and includes FLY-5.
+- **Docs:** `tickets.md` FLY table + FLY-5 section + status note + changelog table,
+  `HANDOFF.md` §1 JQL line, `data/README.md` §5 caps, `links.md` changelog range (1–8).
+- **Validator impact:** check count unchanged at 318 (same single FLY check, tightened to
+  FLY-1 + FLY-5).
+
 ## Anticipated anchor updates (later passes, not yet applied)
 
 These are the specific test assertions that will change, pass by pass, as capped categories
@@ -126,11 +143,13 @@ get built out. They are listed here first so each edit is deliberate and auditab
 
 | Category (pass) | Seed growth | Test assertion to update |
 |---|---|---|
-| FLY statuses | a second FLY ticket in `In Progress` | `mockapis/test/mock.test.js` ~L99 (JQL total `1`) |
+| *(all anticipated passes applied)* | | |
 
 Applied so far: **pass 2** ORB next-key (`ORB-4` → `ORB-9`, `mock.test.js`); **pass 3**
 Confluence counts (ENG 5 → 11, PD 2 → 4, next content id 98312 → 98316 — `mock.test.js` +
 `scripts/smoke.js` + `validate-links.mjs`); **pass 4** containers per-service-per-env
 (5 → 12 — `datadog/mock/test/mock.test.js` + `validate-links.mjs`); **pass 5** logs
 per-service coverage (6 → 11 — `datadog/mock/test/mock.test.js` + `validate-links.mjs`);
-**pass 6** orbiter-dashboard spans (1 → 4 — `datadog/mock/test/mock.test.js`).
+**pass 6** orbiter-dashboard spans (1 → 4 — `datadog/mock/test/mock.test.js`); **pass 7**
+second FLY ticket `In Progress` (1 → 2 — `mockapis/test/mock.test.js` +
+`validate-links.mjs`).

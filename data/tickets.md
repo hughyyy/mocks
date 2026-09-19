@@ -131,13 +131,14 @@ hard anchor; the SME directory in `components.md` is unchanged.
 | `FLY-2` | Preflight checklist API for field app | Story | Medium | To Do | jo | mira | seed (anchor) |
 | `FLY-3` | Add heartbeat telemetry to flight log | Task | Medium | In Review | mira | ada | seed (anchor) |
 | `FLY-4` | Archive backfill cache serves stale interval after reconnect | Bug | Medium | To Do | ravi | grayson | seed |
-| `FLY-5` | flightlog validator must reject malformed heartbeat records | Task | Medium | To Do | clara | ravi | seed |
+| `FLY-5` | flightlog validator must reject malformed heartbeat records | Task | Medium | In Progress | clara | ravi | seed |
 | `FLY-6` | Field app: tablet preflight checklist and live mission view | Story | High | To Do | sam | jo | seed |
 | `FLY-7` | Smoke-test gate must block rollout on failure | Bug | High | In Review | ada | mira | seed |
 | `FLY-8` | Standardize deployment and ticket tags across services | Task | Medium | In Review | ravi | ada | seed |
 
-Status note (anchor): **exactly one FLY issue is `In Progress` (`FLY-1`)** — the JQL
-`project = FLY AND status = "In Progress"` contract asserts a single hit.
+Status note (anchor): **exactly two FLY issues are `In Progress` (`FLY-1`, `FLY-5`)** —
+the JQL `project = FLY AND status = "In Progress"` contract asserts 2 hits (seed build-out
+pass 7 moved FLY-5 into progress; see ledger).
 
 ### FLY-1 — Waypoint smoothing causes overshoot on tight turns (anchor)
 
@@ -208,6 +209,10 @@ Status note (anchor): **exactly one FLY issue is `In Progress` (`FLY-1`)** — t
 | 10007 | clara | 2026-09-18 | Drafted a parser test where a 1Hz heartbeat with a dropped header must fail with a line number. |
 | 10008 | ravi | 2026-09-18 | Agreed: fail loudly, reference the FLY-3 record format so the error message names the field. |
 
+- **Seed build-out pass 7** (ledger): moved to `In Progress` (changelog 8, clara,
+  2026-09-18) once the parser tests landed; the JQL In-Progress contract moved from 1 → 2.
+  Parser activity matches the FLY-5 logs (`log_10010`/`log_10011`, see `operations.md`).
+
 ### FLY-6 — Field app: tablet preflight checklist and live mission view
 
 - Component: field-ops-app (Preflight checklist UI, Live mission view).
@@ -265,7 +270,8 @@ Status note (anchor): **exactly one FLY issue is `In Progress` (`FLY-1`)** — t
 | 3 | FLY-1 | To Do | In Progress | mira | 2026-09-02 |
 | 4 | FLY-3 | To Do | In Review | mira | 2026-09-15 |
 | 5 | FLY-7 | To Do | In Review | ada | 2026-09-16 |
-| 6 | FLY-8 | To Do | In Review | ravi | 2026-09-17 |
+| 7 | FLY-8 | To Do | In Review | ravi | 2026-09-17 |
+| 8 | FLY-5 | To Do | In Progress | clara | 2026-09-18 |
 
 ## Cross-links every ticket must resolve
 

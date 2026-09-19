@@ -47,8 +47,8 @@ checklist), then `mockapis/DESIGN.md` (store schemas) and `../AGENTS.md` (invari
   `overshoot` (ticket FLY-1), **11 logs before ingest, 12 after**; spans: trace
   `fedcba9876543210` service `flyer-flight`, `1234567890abcdef` (3 spans); CI
   `deploy-orbiter-prod` sha `9f2c8a1` tag `orbiter-1.4.2`; spans events validate `ok`.
-- JQL totals asserted: `project = FLY AND status = "In Progress"` → **1**; smoke compares
-  ORB issue count.
+- JQL totals asserted: `project = FLY AND status = "In Progress"` → **2** (FLY-1 + FLY-5);
+  smoke compares ORB issue count.
 
 **Rule:** *extend, don't move* — add new entities alongside; when an addition would change a
 hard-asserted count/status (e.g. adding another FLY In Progress issue, or more containers),

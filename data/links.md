@@ -69,7 +69,7 @@ asserts this and must pass.
 ## Id ranges (no collisions)
 
 - Issues: 10001–10016 (ORB-1..8 + FLY-1..8). Next ORB auto-key: **ORB-9**; next FLY: FLY-9.
-- Comments: 10000–10021. Changelog: 1–7.
+- Comments: 10000–10021. Changelog: 1–8.
 - Content ids: 98301–98315 (ENG 11 records: 9 pages + 2 blogposts; PD 4 pages). Next free: **98316**.
 - Spans: span_30001–span_30013. CI: pipe_20001–pipe_20022, job_20002–job_20023.
 - Logs: log_10001–log_10011 (capped at 11).
