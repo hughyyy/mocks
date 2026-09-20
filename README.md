@@ -2,8 +2,19 @@
 
 Grouped home for the four local mock-server projects. Each subfolder is its **own git
 repository** (matching the workspace convention); this folder holds only the system-level
-documentation and the agents file (`AGENTS.md`). Agents and humans connecting to the suite:
-start at [`AGENT-GUIDE.md`](./AGENT-GUIDE.md) (stand up → connect → verify).
+documentation, the agents file (`AGENTS.md`), and the canonical seed-data model (`data/`).
+Agents and humans connecting to the suite: start at
+[`AGENT-GUIDE.md`](./AGENT-GUIDE.md) (stand up → connect → verify).
+
+## What's in this repo
+
+This repository is the **suite orchestration home**: system docs, the agent invariant
+(`AGENTS.md`), and the canonical `data/` model that all per-product seeds derive from.
+The four mock servers themselves live in **separate git repositories** that sit alongside
+this one — `mockcore/`, `mockapis/`, `datadog/`, `mailmock/` — kept in sync as siblings
+(each imports the shared core by relative path), and are gitignored here rather than
+nested. A full working clone of the suite needs this repo **and** those four sibling
+repos on disk under the same parent.
 
 | Repo | What it is | Serves | Port |
 |---|---|---|---|
@@ -81,13 +92,20 @@ Auth: Atlassian — Basic (email+API token / username+pass), Bearer PAT, OAuth-3
 
 ## Key files / docs
 
+In this repo:
+
+- `AGENT-GUIDE.md` — stand up each server, connect as a client, prove a change.
+- `AGENTS.md` — hard invariants + change flow for the whole suite.
+- `data/` — canonical seed model: organisation + software specs + entity conventions.
+
+In the sibling product repos (`mockcore/`, `mockapis/`, `datadog/`, `mailmock/`):
+
 - `mockapis/DESIGN.md` — storage + projection design (implemented, deviations recorded).
 - `mockapis/ENDPOINTS.md` — every endpoint, what it returns, data-backed or placeholder.
 - `mockapis/STATUS.md` — verified state + what remains.
 - `mockapis/ACCESS.md` — official access methods (Cloud + DC, all auth models).
 - `mockapis/examples/refinement-stacks.md` — sample agent call stacks.
 - `datadog/README.md` — official Datadog API research (auth, sites, catalog, OpenAPI spec).
-- `data/` — canonical seed model: organisation + software specs + entity conventions.
 
 ## Intentional non-committed artifacts
 
