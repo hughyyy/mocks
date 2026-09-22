@@ -75,6 +75,17 @@ the write (round-trip is enforced by the contract suites). Jira `POST /issue`,
 blogposts, spaces, labels, footer-comments; Datadog `POST /catalog/entity`, `POST /logs`;
 mail `POST /v1.0/me/sendMail`, `POST /v1.0/me/messages`, `PATCH`/`DELETE`.
 
+**Storage backends & persistence (the four launch modes).** Each server reads
+`MOCK_STORAGE=json|sqlite` and `MOCK_PERSIST=on|off` (defaults `json`/`on`) and has a
+per-mode startup script — `scripts/start-json.sh`, `start-json-ephemeral.sh`,
+`start-sqlite.sh`, `start-sqlite-ephemeral.sh` (also `npm run start:…`). Durable modes write
+to `<repo>/data/` (json) or `<repo>/data-sqlite/mockstore.sqlite` and survive restarts;
+ephemeral modes boot fresh from `seed/` into a throwaway tmp dir and clear on teardown
+(restart = mock data again) without touching either durable store. `scripts/clear-json.sh` /
+`clear-sqlite.sh` wipe the named durable store (next boot reseeds); `npm run reset` restores
+both. The json and sqlite stores are independent and may diverge. Design + semantics:
+[`mockcore/STORAGE.md`](./mockcore/STORAGE.md).
+
 ## 3. Data model — read this before you write seeds
 
 - `seed/*.json` (and `datadog/mock/seed/events.jsonl`) are **the schema** — schema-shaped,
